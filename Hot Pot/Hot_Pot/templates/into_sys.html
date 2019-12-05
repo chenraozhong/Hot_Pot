@@ -1,0 +1,394 @@
+﻿{% extends "layout.html" %}
+{% block head %}
+{{super()}}
+<style>
+    .myjumbotron {
+        margin-top: 0.5%;
+        overflow: hidden;
+        width: 100%;
+        background-image: url("../static/火锅.jpg");
+        background-size: 94% 100%;
+        background-position-x: 55%;
+        background-repeat: no-repeat;
+        height: 45%;
+    }
+
+    .mysearch {
+        border: 1px solid #f16522;
+        float: left;
+        width: 30%;
+        height: 16%;
+        margin-top: 9%;
+        margin-left: 30%;
+        max-width: 30%;
+    }
+
+    .mysearchbtn {
+        outline: none;
+        border: 1px solid #f16522;
+        border-radius: 0px;
+        float: left;
+        margin: 9% 0px 0px 0px;
+        height: 16%;
+        width: 8%;
+        background-color: #f16522;
+        text-align: center;
+        color: white;
+    }
+
+        .mysearchbtn:active {
+            background-color: lightsalmon;
+        }
+
+    .myContent {
+        width: 94%;
+        margin-top: 0.5%;
+        margin-left: 3%;
+    }
+
+    .mysort {
+        height: 7%;
+        font-size: 140%;
+        padding-top: 0.4%;
+        background-color: white;
+    }
+
+        .mysort ul {
+            display: inline;
+        }
+
+        .mysort li {
+            display: inline;
+            margin-left: 7%;
+        }
+
+        .mysort button {
+            border: 0px;
+            background-color: white;
+        }
+
+            .mysort button:active {
+                background-color: gray;
+            }
+
+    .myorder {
+        margin-top: 0.8%;
+        background-color: white;
+        padding-top: 0.3%;
+        height: 5%;
+        font-size: 100%;
+    }
+
+        .myorder li {
+            display: inline;
+            margin-left: 3%;
+        }
+
+    .myGrally {
+        display: inline-block;
+        margin-top: 3%;
+        margin-left: 8%;
+        width: 25%;
+        height: 55%;
+        border: 1px solid gray;
+        background-color: white;
+    }
+
+    .myGrallyPicture {
+        width: 100%;
+        height: 70%;
+        background-size: 100% 100%;
+    }
+
+    .myGrallyDishname {
+        /*
+            用于显示菜品名字
+        */
+        height: 10%;
+        width: 100%;
+        /*background-color:red;*/
+    }
+
+        .myGrallyDishname p {
+            font-size: 150%;
+            text-align: center;
+        }
+
+    .myGrallySale {
+        height: 10%;
+        width: 50%;
+        /*background-color:green;*/
+        display: inline-block;
+        padding-left: 3%;
+    }
+
+    .myGrallyMark {
+        display: inline-block;
+        height: 10%;
+        width: 50%;
+        /*background-color:aliceblue;*/
+        padding-left: 28%;
+    }
+
+    .myGrally hr {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .myGrallyPrice {
+        display: inline-block;
+        width: 50%;
+        padding-top: 1%;
+        padding-left: 3%;
+        height: 10%;
+        font-size: 110%;
+        /*background-color:coral;*/
+    }
+
+    .myGrallyAmount {
+        height: 10%;
+        width: 50%;
+        display: inline-block;
+        text-align: center;
+    }
+
+        .myGrallyAmount button {
+            margin-top: 5%;
+            margin-right: 1%;
+            margin-left: 1%;
+            border-radius: 100%;
+            /*border:1px solid gray;*/
+            height: 70%;
+            width: 15%;
+            padding-left: 4%;
+        }
+
+            .myGrallyAmount button span {
+                font-size: 60%;
+                color: gray;
+                text-align: center;
+            }
+
+        .myGrallyAmount input {
+            width: 40%;
+            height: 80%;
+            border-radius: 10%;
+            border: 1.5px solid gray;
+            text-align: center;
+        }
+</style>
+
+<script>
+    var mySearchResult={{row|tojson}};
+    var myLen={{len|tojson}};
+    var myLead={{LeadFlag|tojson}};
+    $(document).ready(function(){
+        if(!myLead){
+            window.alert("这本期刊你今日已借过，请改日再借");
+        }
+        ShowResult();
+        //设成负数起到清除对于cookie的作用
+        setCookie("myInput","",-1);
+        setCookie("mySort","",-1);
+    })
+
+    function AddAmount(index){
+        var myShowFrame=document.getElementById("myFrameID"+index);
+        var myValue=myShowFrame.getAttribute("value");
+        myValue++;
+        myShowFrame.setAttribute("value",myValue);
+    }
+
+    function SubAmount(index){
+        var myShowFrame=document.getElementById("myFrameID"+index);
+        var myValue=myShowFrame.getAttribute("value");
+        if(myValue!='0'){
+            myValue--;
+        }
+        myShowFrame.setAttribute("value",myValue);
+    }
+
+
+    function ShowResult(){
+        //用于显示图片画廊
+        for(var i=0;i<myLen;i++){
+            var myCDiv=document.createElement("div");
+            myCDiv.setAttribute("class","myGrally");
+
+            var myPDiv=document.getElementById("myPictureID");
+            var myPictureDiv=document.createElement("div");
+            myPictureDiv.setAttribute("class","myGrallyPicture");
+            var myImageAddress=mySearchResult[i][3].toString();
+            var myStr='"';
+            /*
+            由于不知道如何用正则进行\替换成/所以采用如下这个办法
+            */
+            for(var j=0;j<myImageAddress.length;j++){
+                if(myImageAddress[j]=="\\"){
+                    myStr+='/';
+                }
+                else{
+                    myStr+=myImageAddress[j];
+                }
+            }
+            myStr+='"';
+            myPictureDiv.style.backgroundImage="url("+myStr+")";
+            //菜品名字显示
+            var myDishnameDiv=document.createElement("div");
+            myDishnameDiv.setAttribute("class","myGrallyDishname");
+            myDishnameDiv.innerHTML="<p>"+mySearchResult[i][1]+"</p>";
+            //菜品销量显示
+            var mySaleDiv=document.createElement("div");
+            mySaleDiv.setAttribute("class","myGrallySale");
+            mySaleDiv.innerHTML="<p>销量 "+mySearchResult[i][6]+"</p>";
+            //菜品评分显示
+            var myMarkDiv=document.createElement("div");
+            myMarkDiv.setAttribute("class","myGrallyMark");
+            var myStr=mySearchResult[i][7].toString();
+            if(myStr.length>3){
+                myStr=myStr.substr(0,3);
+            }
+            myMarkDiv.innerHTML="<p>评分 "+myStr+"</p>";
+            //分割线
+            var myBrDiv=document.createElement("hr");
+            //菜品价格显示
+            var myPriceDiv=document.createElement("div");
+            myPriceDiv.setAttribute("class","myGrallyPrice");
+            myPriceDiv.innerHTML="<p>价格 "+mySearchResult[i][2]+"</p>";
+            //数量选择框
+            var myAmountDiv=document.createElement("div");
+            var mySubButton=document.createElement("button");
+            var myAddButton=document.createElement("button");
+            var myShowFrame=document.createElement("input");
+            if(getCookie(mySearchResult[i][0])!='' && getCookie("ID")!=''){
+                myShowFrame.setAttribute("value",getCookie(mySearchResult[i][0]));
+            }
+            else{
+                myShowFrame.setAttribute("value","0");
+            }
+            myShowFrame.setAttribute("id","myFrameID"+i);
+            myShowFrame.setAttribute("disabled","disabled");
+            myAddButton.setAttribute("onclick","AddAmount("+i+")");
+            mySubButton.setAttribute("onclick","SubAmount("+i+")");
+
+            myAmountDiv.setAttribute("class","myGrallyAmount");
+            myAmountDiv.appendChild(mySubButton);
+            mySubButton.innerHTML="<span class=\"glyphicon glyphicon-minus\"></span>";
+            myAmountDiv.appendChild(myShowFrame);
+            myAddButton.innerHTML="<span class=\"glyphicon glyphicon-plus\"></span>";
+            myAmountDiv.appendChild(myAddButton);
+
+
+            myCDiv.appendChild(myPictureDiv);
+            myCDiv.appendChild(myDishnameDiv);
+            myCDiv.appendChild(mySaleDiv);
+            myCDiv.appendChild(myMarkDiv);
+            myCDiv.appendChild(myBrDiv);
+            myCDiv.appendChild(myPriceDiv);
+            myCDiv.appendChild(myAmountDiv);
+
+            myPDiv.appendChild(myCDiv);
+        }
+    }
+
+    function setCookie(cname, cvalue, exdays){
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));//ms:生存周期
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function getMySelect() {
+        var myInput = document.getElementById("myInputID").value;
+        setCookie("myInput", myInput, 0.5);
+        StoreDish();
+        window.open("/","_parent");
+    }
+
+    function UpType(myValue){
+        setCookie("mySort",myValue,0.5);
+        StoreDish();
+        window.open("/","_parent");
+    }
+
+    function StoreDish(){
+        //将用户已选的菜品存入cookies中，以保证页面刷新之后，用户的选择还在
+        //在跳入到已选菜单之后，开发人员也能从cookies中读取相关数据，而无需再从数据库中读取
+
+        for(var i=0;i<myLen;i++){
+            var myDishID=mySearchResult[i][0];
+            var myAmount=document.getElementById("myFrameID"+i).getAttribute("value");
+            //判断myDishID是否加入已选菜单中
+            var myTem=getCookie(myDishID);
+            if(myTem==''){
+                setCookiesArray("Dishes",myDishID);
+            }
+            setCookie(myDishID,myAmount,0.1);
+        }
+    }
+
+    function setCookiesArray(myName,myValue){
+        //将myValue添加到数组myName中（因为无法向cookies中添加array，只能先将array转成str,再存入cookies中）
+        var cookie=getCookie(myName);
+        var myArray=cookie.split("|");
+        myArray.push(myValue);
+        cookie=myArray.join("|");
+        if(cookie.endsWith("\\|")){
+            cookie=cookie.substring(0,cookie.length-1);
+        }
+        setCookie(myName,cookie,0.1);
+    }
+
+</script>
+
+{% endblock %}
+
+
+{%block pre_content%}
+<div class="myjumbotron" id="myjumbotronID">
+    <input class="mysearch" id="myInputID" style="outline:none;" type="text" placeholder="请输入搜索内容..." />
+    <button type="button" class="mysearchbtn" onclick="getMySelect()"><span class="glyphicon glyphicon-search" style="margin-left:-20%;margin-right:10%"></span>搜索</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="myContent">
+    <!-- 食材分类 -->
+    <div class="mysort">
+        <span class="glyphicon glyphicon-list"></span>
+        <span>食材分类</span>
+        <ul>
+            <li><button onclick="UpType('锅底')">锅底</button></li>
+            <li><button onclick="UpType('荤菜')">荤菜</button></li>
+            <li><button onclick="UpType('素菜')">素菜</button></li>
+            <li><button onclick="UpType('酒水')">酒水</button></li>
+        </ul>
+    </div>
+    <!-- 新品和销量tag -->
+    <div class="myorder">
+        <ul>
+            <li style="margin-left:1%;"><button>新品</button></li>
+            <li><button>销量</button></li>
+        </ul>
+    </div>
+    <!-- 图片画廊 -->
+    <div class="myPicture_gallery" id="myPictureID">
+    </div>
+
+</div>
+
+{% endblock %}

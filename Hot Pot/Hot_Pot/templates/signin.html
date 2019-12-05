@@ -1,0 +1,332 @@
+﻿{%extends 'layout.html'%}
+{%block head%}
+{{super()}}
+<style>
+     .title {
+         float: left;
+         width: 20%;
+         height: 100%;
+         margin-left: 2%;
+    }
+    #userID a{
+        color:rgb(246, 41, 41);
+    }
+    #userID a:hover{
+        background-color:white;
+        text-decoration:underline;
+        color:rgb(252, 22, 23);
+    }
+    .num,.unnum{
+        border-radius:25px;
+        vertical-align:top;
+        display:inline-block;
+        width:23px;
+        height:23px;
+        background-color:rgb(228, 24, 25);
+        margin-right:8px;
+        color:white;
+    }
+    .unnum{
+        background-color:#918d8d;
+    }
+    .mynavbar li:not(.active){
+           text-align:center;
+           font-size:17px;
+           text-decoration:none;
+    }
+    .contentborder{
+        margin-left:35%;
+        margin-top:5%;
+        display:block;
+    }
+    .contentborder span{
+        font-size:18px;
+        margin-right:20px;
+    }
+    .contentborder input{
+        outline:none;
+        width:250px;
+        height:50px;
+        border:1px solid;
+        border-radius:5px;
+        border-color:rgb(201, 198, 199);
+    }
+    .contentborder .goNext{  
+        width:300px;
+        height:50px;
+        border:1px solid;
+        border-color:rgb(223, 221, 217);
+        color:black;
+    }
+    .contentborder #getnum{
+        height:40px;
+        width:150px;
+        border:1px solid;
+        border-color:rgb(223, 221, 217);
+    }
+    .contentborder button:hover{
+        border-color:black;
+    }
+    </style>
+<script>
+    var usersearch = {{usersearch|tojson}};//搜索结果
+    var userID={{usernum|tojson}}+1;
+    userID=ComputeUserID(userID);
+    var myflag={{myflag|tojson}};
+
+    function ComputeUserID(userID){
+        var myStr=userID.toString();
+        var myLen=6-myStr.length;
+        var myID="";
+        for(var i=0;i<myLen;i++){
+            myID+='0';
+        }
+        myID+=myStr;
+        return myID;
+    }
+
+    $(document).ready(function(){
+        if(myflag){
+            ShowSuccess();
+        }
+        else{
+            ShowPhoneNum();
+        }
+        $('#getnum').on('click',function(){
+            var phoneNum = $('#PhoneNumID').val();
+            var regex = new RegExp($('#PhoneNumID').attr('regex'));
+            if(!regex.test($('#PhoneNumID').val())){
+                alert("请输入正确手机号");
+            }else{
+                if(!CheckPhoneNum()){
+                    return false;
+                }
+                ShowFillIn();//测试的时候添加的，记得删除
+                //check(phoneNum,tpl_val);
+                //count();
+                //var tpl_value = decodeURIComponent(tpl_val);
+                //chenkNum = tpl_value.slice(7);
+                //console.log(chenkNum); //调试
+            }
+    })
+        // 根据聚合提供的接口文档，设置相应项
+        function check(mobile,tpl_value){
+            $.ajax({
+                type:'get',
+                url:'http://v.juhe.cn/sms/send',
+                data:{
+                    mobile:mobile,
+                    tpl_id:162716,
+                    tpl_value:tpl_value,
+                    key:'2b335e4fdfde2f6d03c50cc222aae413'
+                },
+                dataType:"jsonp",
+                jsonp:"callback",
+                success:function(data){
+                    console.log(data) // {reason: "操作成功", result: {…}, error_code: 0}
+                    $('.goNext').on('click',function(){
+                        console.log(1111)
+                        if(data.error_code === 0){
+                            // 如果发送的验证码和用户输入的验证码一致，就登录成功，否则提示用户验证不正确
+                            if(chenkNum === $('.phone').val()){
+                                ShowFillIn();
+                            }else{
+                                alert("您输入的验证码有误，请输入正确的验证码");
+                            }
+                        }else{
+                            // 否则提示用户错误信息
+                            alert(data.reason);
+                        }
+                    });
+                }
+            })
+        }
+        // 生成随机的6位数的函数
+        function mathRan(){
+            var num = '';
+            for(var i = 0; i < 6; i++){
+                num += Math.floor(Math.random() * 10);
+            }
+            return num;
+        }
+        var mathNum = mathRan();
+        // 根据接口文档，对验证码进行转换urlencode形式
+        var tpl_val = encodeURIComponent('#code#='+ mathNum);
+        // 封装倒计时函数
+        var countNum = 60;
+        function count( ){
+            if(countNum == 0){
+                $('#getnum').attr('disabled',false);
+                $('#getnum').text('获取验证码');
+                countNum = 60;
+                return;
+            }else{
+                $('#getnum').attr('disabled',true);
+                $('#getnum').text('重新发送('+ countNum + 's)');
+                countNum--;
+            }
+            setTimeout(function(){
+                count( )
+            },1000)
+        }
+    }); 
+
+    var myInput='';
+    var nextLock=false;
+    function ShowFillIn() {
+        if(nextLock){
+            document.getElementById("SuccessID").style = "display:none";
+            document.getElementById("FillInID").style = "display:block";
+            document.getElementById("CheckPhoneNumID").style = "display:none";
+            $('#ID2').parents().css("border-bottom","3px solid rgb(228, 24, 25)");
+            $('#ID3').parents().css("border-bottom","none");
+            $('#ID1').parents().css("border-bottom","none");
+            $('#ID2').removeClass('unnum');
+            $('#ID2').addClass('num');
+            $('#ID3').removeClass('num');
+            $('#ID3').addClass('unnum');
+            $('#ID1').removeClass('num');
+            $('#ID1').addClass('unnum');
+            $('#ID2').parent().css('color', 'black');
+            $('#ID3').parent().css('color', '#918d8d');
+            $('#ID1').parent().css('color', '#918d8d');
+        }
+        else{
+            window.alert("请先对手机号进行验证");
+        }
+    }
+    function ShowSuccess() {
+        document.getElementById("SuccessID").style = "display:block";
+        document.getElementById("FillInID").style = "display:none";
+        document.getElementById("CheckPhoneNumID").style = "display:none";
+        $('#ID3').parents().css("border-bottom","3px solid rgb(228, 24, 25)");
+        $('#ID2').parents().css("border-bottom","none");
+        $('#ID1').parents().css("border-bottom","none");
+        $('#ID3').removeClass('unnum');
+        $('#ID3').addClass('num');
+        $('#ID2').removeClass('num');
+        $('#ID2').addClass('unnum');
+        $('#ID1').removeClass('num');
+        $('#ID1').addClass('unnum');
+        $('#ID3').parent().css('color', 'black');
+        $('#ID2').parent().css('color', '#918d8d');
+        $('#ID1').parent().css('color', '#918d8d');
+        window.open("/login","_parent");
+    }
+    function ShowPhoneNum(){
+        document.getElementById("SuccessID").style = "display:none";
+        document.getElementById("FillInID").style = "display:none";
+        document.getElementById("CheckPhoneNumID").style = "display:block";
+        $('#ID1').parents().css("border-bottom","3px solid rgb(228, 24, 25)");
+        $('#ID2').parents().css("border-bottom","none");
+        $('#ID3').parents().css("border-bottom","none");
+        $('#ID1').removeClass('unnum');
+        $('#ID1').addClass('num');
+        $('#ID2').removeClass('num');
+        $('#ID2').addClass('unnum');
+        $('#ID3').removeClass('num');
+        $('#ID3').addClass('unnum');
+        $('#ID1').parent().css('color', 'black');
+        $('#ID2').parent().css('color', '#918d8d');
+        $('#ID3').parent().css('color', '#918d8d');
+    }
+    function CheckPhoneNum(){
+        myInput=$('#PhoneNumID').val();
+        var mylen=Object.keys(usersearch).length;
+        if(mylen){
+            for(var i=0;i<mylen;i++){
+                if(usersearch[i][4]==myInput){
+                    window.alert("该手机号已经被注册，请重新输入");
+                    return false;
+                }
+            }
+            nextLock=true;
+            return true;
+        }
+        else{
+            window.alert("验证成功");
+            nextLock=true;
+            return true;
+        }
+    }
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    function CheckPersonMess(){
+        var myname=$('#name').val();
+        //检查用户名是否与已用用户相冲突
+        var mylen=Object.keys(usersearch).length;
+        if(mylen){
+            for(var i=0;i<mylen;i++){
+                if(usersearch[i][1]==myname){
+                    window.alert("该用户名已经被注册，请重新输入");
+                    return false;
+                }
+            }
+        }
+        //检查两次密码是否输入一致
+        var mypassword=$('#password').val();
+        var mypassword2=$('#passwordagain').val();
+        if(mypassword2!=mypassword){
+            window.alert("两次密码不一致，请重新输入");
+            return false;
+        }
+
+        var personmess="'"+userID+"','"+myname+"','"+mypassword+"','"+"用户"+"','"+myInput+"','0'";
+        setCookie("personmess",personmess,0.1);
+        window.open('/SigninSuccess','_parent');
+    }
+</script>
+{%endblock%}
+
+{%block navbar%}
+<div class="mynavbar">
+    <div class="title"><a href="/"><img src="../static/logo2.png" style="height:100%;width:100%" /></a></div>
+    <ul style="margin-left:-50%;">
+        <li style="margin-left:-8%"><span class="num" id="ID1">1</span>验证手机号</li>
+        <li style="color:#918d8d;"><span class="unnum" id="ID2">2</span>填写账户信息</li>
+        <li style="color:#918d8d;"><span class="unnum" id="ID3">3</span>注册成功</li>
+        <span style="margin-left:14%;font-size:18px;color:gray">已有账号?</span>
+        <li id="userID"style="margin-left:0;border:none"><a href="/login">请登录></a></li>
+    </ul>
+    <hr style="margin-top:-10px;" />
+</div>
+<hr />
+{%endblock%}
+
+{%block pre_content%}
+<div style="height:60%">
+<div id="CheckPhoneNumID" class="contentborder" style="display:none">
+     <span>手机号</span>
+     <input type="tel" id="PhoneNumID" placeholder="建议使用常用手机号" regex="^[1][3,4,5,7,8][0-9]{9}$" maxlength="11">
+     <br/><br/><br/>
+     <input type="text" class="phone" placeholder="请输入验证码">
+     <button id="getnum">获取验证码</button>
+     <br/><br/>
+     <button  class="goNext" style="color:white;background-color:rgb(253, 27, 27);font-size:20px;">下一步</button>
+</div>
+<div id="FillInID" class="contentborder" style="display:none">
+    <span>姓名</span>
+    <input type="text" id="name" placeholder="请输入用户名" />
+    <!--<br/><br/>
+    <span>邮箱</span>
+    <input type="email" id="email" placeholder="请输入邮箱" />-->
+    <br/><br/>
+    <span>密码</span>
+    <input type="password" id="password" placeholder="请输入密码">
+    <br/><br/>
+    <span style="margin-left:-38px;">确认密码</span>
+    <input type="password" id="passwordagain" placeholder="请确认密码">
+    <br/><br/>
+    <button onclick="CheckPersonMess()" class="goNext" style="color:white;background-color:rgb(253, 27, 27);font-size:20px;">下一步</button>
+</div>
+<div id="SuccessID" style="display:none">
+   
+</div>
+
+ </div>
+
+{%endblock%}

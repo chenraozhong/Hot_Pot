@@ -1,0 +1,199 @@
+﻿{%extends "layout.html"%}
+
+{%block head%}
+{{super()}}
+<style>
+     .login_posi {
+            text-align: center;
+            position: absolute;
+            top: 20%;
+            right: 35%;
+            border:1px solid gray;
+            border-color: black;
+            border-radius:5px;
+            background-color:white;
+            width:30%;
+        }
+        .input_style,.myselect{
+            height:40px;
+            border-style: outset;
+            margin-top:30px;
+            border:1px solid gray;
+            border-radius:2px;
+            width: 100%;
+            font-size: 16px;
+        }
+        input[type="submit"]{
+            width: 100%;
+            border-style:none;
+            border-color: black;
+            border-radius:4px;
+            background-color:  RGB(255,108,15);
+            font-size:16px;
+            color:white;
+            margin-top:30px;
+            margin-bottom:70px;
+            height:40px;
+        }
+        input[type="submit"]:hover{
+              border-style:none;
+              background-color:  RGB(255,88,15);
+        }
+        a{
+            text-decoration: none;
+            font-size: 16px;
+            color: black;
+        }
+        a.do_left{
+            position: absolute;
+            top: 85%;
+            left: 10%;
+            text-decoration: none;
+        }
+        a.do_right{
+            position: absolute;
+            top:85%;
+            right:10%;
+            text-decoration: none;
+        }
+        body{
+            background-color:RGB(245,245,245);
+            /*background-image:url("../static/火锅.jpg");*/
+            background-repeat:no-repeat;
+            background-size:60%;
+        }
+
+    </style>
+<script>
+    var myusermessage = {{MYUserMessage|tojson}};
+    function checkpassword() {
+        var mySelectC=document.getElementById("myselectID");
+        var myRole=mySelectC.options[mySelectC.selectedIndex].text;
+        var name = document.getElementById('usernameID').value;
+        var password = document.getElementById('passwordID').value;
+        if (name == "" || password == "") {
+            window.alert("请输入用户名和密码");
+        }
+        else{
+            var myStr=myusermessage.toString();
+            myStr=myStr.split(",");
+            var myID="";
+            var myGrade="";
+            //var myStatus;
+            for(var i=0;i<myStr.length;){
+                if(myStr[i++]==name && myStr[i++]==password && myStr[i++]==myRole){
+                    myID=myStr[i++];
+                    myGrade=myStr[i++];
+                    //myStatus=myStr[i++];
+                    break;
+                }
+            }
+            if(myID==""){
+                window.alert(myID);
+                window.alert("用户名或密码错误");
+            }
+            else{
+                //登录成功
+
+                setCookie("username",name,0.1);
+                setCookie("ID",myID,0.1);
+                setCookie("role",myRole,0.1);
+                setCookie("grade",myGrade,0.1);
+                //以下为生成订单号模块
+                var date=new Date();
+                var myOrderID="";
+                myOrderID+=date.getFullYear();
+                myOrderID+=(GetNum(date.getMonth())+1);
+                myOrderID+=GetNum(date.getDate());
+                myOrderID+=GetNum(date.getHours());
+                myOrderID+=GetNum(date.getMinutes());
+                myOrderID+=myID;
+                setCookie("OrderID",myOrderID,0.1);
+
+                if(myRole=="用户"){
+                    window.open("/","_blank");
+                }
+                else{
+                    window.open("/","_blank");
+                }
+            }
+        }
+    }
+    function GetNum(myNum){
+        var myStr='';
+        if(myNum<=9){
+            myStr+='0';
+            myStr+=myNum;
+            return myStr;
+        }
+        else{
+            return myNum;
+        }
+            
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        var user = getCookie("username");
+        if (user != "") {
+            alert("Welcome again " + user);
+        } else {
+            user = prompt("Please enter your name:", "");
+            if (user != "" && user != null) {
+                setCookie("username", user, 365);
+            }
+        }
+    } 
+
+
+    </script>
+{%endblock%}
+
+{%block content%}
+
+{%block navbar%}
+
+{%endblock%}
+
+<div class="login_posi">
+    <!--post是数据库访问的方法-->
+    <form onsubmit="checkpassword()">
+        <label for="usernameID"></label>
+        <input type="text" id="usernameID" class="input_style"  name="username" placeholder="用户名" />
+        <label for="passwordID"></label>
+        <input type="password" id="passwordID" class="input_style" name="password" placeholder="密码" />
+        <select class="myselect" id="myselectID">
+            <option>用户</option>
+            <option>管理员</option>
+        </select>
+        <input type="submit" value="登录" />
+        <a class="do_left" href="{{url_for('signin')}}" target="_blank" style="text-decoration: none">注册</a>
+        <a class="do_right" href="忘记密码界面" style="text-decoration: none">忘记密码</a>
+    </form>
+
+</div>
+{%block footer%}
+{%endblock%}
+
+{%endblock%}

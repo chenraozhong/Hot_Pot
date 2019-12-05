@@ -1,0 +1,13 @@
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\bin\Microsoft.PythonTools.WebRole.dll
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\attach_server.py
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\visualstudio_py_debugger.py
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\visualstudio_py_repl.py
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\visualstudio_py_util.py
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\__init__.py
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\__main__.py
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\bin\AzureSetup.cfg
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\bin\Microsoft.PythonTools.AzureSetup.exe
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\bin\Microsoft.PythonTools.AzureSetup.exe.config
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\bin\wfastcgi.py
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\web.config
+D:\360MoveData\Users\陈饶中\Desktop\三味真火课程设计\Hot Pot\Hot Pot\obj\Debug\web.debug.config
