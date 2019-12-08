@@ -3,24 +3,26 @@
 {{super()}}
 <style>
     .myjumbotron {
-        margin-top:0.5%;
+        margin-top: 0.5%;
         overflow: hidden;
-        width:100%;
+        width: 100%;
         background-image: url("../static/火锅.jpg");
         background-size: 94% 100%;
-        background-position-x:55%;
-        background-repeat:no-repeat;
+        background-position-x: 55%;
+        background-repeat: no-repeat;
         height: 45%;
     }
+
     .mysearch {
         border: 1px solid #f16522;
         float: left;
         width: 30%;
         height: 16%;
-        margin-top:9%;
-        margin-left:30%;
+        margin-top: 9%;
+        margin-left: 30%;
         max-width: 30%;
     }
+
     .mysearchbtn {
         outline: none;
         border: 1px solid #f16522;
@@ -33,140 +35,209 @@
         text-align: center;
         color: white;
     }
-    .mysearchbtn:active{
-         background-color:lightsalmon;
-    }
 
-    .myContent{
-        width:94%;
-        margin-top:0.5%;
-        margin-left:3%;
-    }
-    .mysort{
-        height:7%;
-        font-size:140%;
-        padding-top:0.4%;
-        background-color:white;
-    }
-        .mysort ul{
-            display:inline;
-        }
-        .mysort li{
-            display:inline;
-            margin-left:7%;
-        }
-        .mysort button{
-            border:0px;
-            background-color:white;
-        }
-        .mysort button:active{
-            background-color:gray;
+        .mysearchbtn:active {
+            background-color: lightsalmon;
         }
 
-    .myorder{
-        margin-top:0.8%;
-        background-color:white;
-        padding-top:0.3%;
-        height:5%;
-        font-size:100%;
+    .myContent {
+        width: 94%;
+        margin-top: 0.5%;
+        margin-left: 3%;
     }
-        .myorder li{
-            display:inline;
-            margin-left:3%;
+
+    .mysort {
+        height: 7%;
+        font-size: 140%;
+        padding-top: 0.4%;
+        background-color: white;
+    }
+
+        .mysort ul {
+            display: inline;
         }
 
-    .myGrally{
-        display:inline-block;
-        margin-top:3%;
-        margin-left:8%;
-        width:25%;
-        height:55%;
-        border:1px solid gray;
-        background-color:white;
+        .mysort li {
+            display: inline;
+            margin-left: 7%;
+        }
+
+        .mysort button {
+            border: 0px;
+            background-color: white;
+        }
+
+            .mysort button:active {
+                background-color: gray;
+            }
+
+    .myorder {
+        margin-top: 0.8%;
+        background-color: white;
+        padding-top: 0.3%;
+        height: 5%;
+        font-size: 100%;
     }
-    .myGrallyPicture{
+
+        .myorder li {
+            display: inline;
+            margin-left: 3%;
+        }
+    
+    .myPicture_gallery{
+        
+    }
+
+    .myGrally {
+        display: inline-block;
+        float:left;
+        margin-top: 3%;
+        margin-left: 7%;
+        width: 25%;
+        height: 55%;
+        border: 1px solid gray;
+        background-color: white;
+    }
+    .myAddGrally{
+        display: inline-block;
+        width: 45%;
+        height: 45%;
+        margin-top:25%;
+        margin-left:28%;
+        border: 1px solid gray;
+        background-color: gray;
+        border-radius:50%;
+    }
+    .myAddGrally span{
+        padding-top:9%;
+        padding-left:21%;
+        font-size:500%;
+    }
+    .myAddGrally button{
+        border-radius:50%;
         width:100%;
-        height:70%;
-        background-size:100% 100%;
+        height:100%;
+        background-color:white;
+        font-size:500%;
+        color:rgb(114, 114, 122);
     }
-    .myGrallyDishname{
-        /*
-            用于显示菜品名字
-        */
-        height:10%;
-        width:100%;
-        /*background-color:red;*/
+
+    .myGrallyPicture {
+        width: 100%;
+        height: 70%;
+        background-size: 100% 100%;
     }
-    .myGrallyDishname p{
-        font-size:150%;
+
+    .myGrallyDishname {
+        height: 10%;
+        width: 100%;
         text-align:center;
     }
 
-    .myGrallySale{
-        height:10%;
-        width:50%;
+        .myGrallyDishname p {
+            font-size: 150%;
+            text-align: center;
+        }
+        .myGrallyDishname input{
+            height:100%;
+            width:80%;
+            font-size:150%;
+            text-align:center;
+            border:1px solid gray;
+            background-color:RGB(245,245,245);
+        }
+
+    .myGrallySale {
+        height: 10%;
+        width: 50%;
         /*background-color:green;*/
-        display:inline-block;
-        padding-left:3%;
+        display: inline-block;
+        padding-left: 3%;
     }
 
-    .myGrallyMark{
-        display:inline-block;
-        height:10%;
-        width:50%;
+    .myGrallyMark {
+        display: inline-block;
+        height: 10%;
+        width: 50%;
         /*background-color:aliceblue;*/
-        padding-left:28%;
-    }
-   
-    .myGrally hr{
-        margin-top:0;
-        margin-bottom:0;
+        padding-left: 28%;
     }
 
-   .myGrallyPrice{
-       display:inline-block;
-       width:50%;
-       padding-top:1%;
-       padding-left:3%;
-       height:10%;
-       font-size:110%;
-       /*background-color:coral;*/
-   }
+    .myGrally hr {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .myGrallyPrice {
+        display: inline-block;
+        width: 50%;
+        padding-top: 1%;
+        padding-left: 3%;
+        height: 10%;
+        font-size: 110%;
+    }
+
+        .myGrallyPrice input {
+            width: 40%;
+            height: 80%;
+            border-radius: 10%;
+            border: 1.5px solid gray;
+            text-align: center;
+        }
+
     .myGrallyAmount {
         height: 10%;
         width: 50%;
         display: inline-block;
         text-align: center;
-        
     }
-    .myGrallyAmount button{
-        margin-top:5%;
-        margin-right:1%;
-        margin-left:1%;
-        border-radius:100%;
-        /*border:1px solid gray;*/
-        height:70%;
-        width:15%;
-        padding-left:4%;
+
+        .myGrallyAmount button {
+            margin-top: 5%;
+            margin-right: 1%;
+            margin-left: 1%;
+            border-radius: 100%;
+            /*border:1px solid gray;*/
+            height: 70%;
+            width: 15%;
+            padding-left: 4%;
+        }
+
+            .myGrallyAmount button span {
+                font-size: 60%;
+                color: gray;
+                text-align: center;
+            }
+
+        .myGrallyAmount input {
+            width: 40%;
+            height: 80%;
+            border-radius: 10%;
+            border: 1.5px solid gray;
+            text-align: center;
+        }
+
+    .myGrallyStatus {
+        height: 10%;
+        width: 50%;
+        display: inline-block;
+        text-align: center;
     }
-    .myGrallyAmount button span{
-        font-size:60%;
-        color:gray;
-        text-align:center;
-    }
-   .myGrallyAmount input{
-       width:40%;
-       height:80%;
-       border-radius:10%;
-       border:1.5px solid gray;
-       text-align:center;
-   }
+
+        .myGrallyStatus p {
+            display: inline-block;
+        }
+
+        .myGrallyStatus select {
+            border: 1px solid gray;
+        }
 </style>
 
 <script>
     var mySearchResult={{row|tojson}};
     var myLen={{len|tojson}};
     var myLead={{LeadFlag|tojson}};
+    var myRole=getCookie("role");
     $(document).ready(function(){
         if(!myLead){
             window.alert("这本期刊你今日已借过，请改日再借");
@@ -196,11 +267,20 @@
 
     function ShowResult(){
         //用于显示图片画廊
+        if(myRole=="管理员"){
+            ShowAdministor();
+        }
+        else{
+            ShowCustomer();
+        }
+    }
+
+    function ShowCustomer(){
+        var myPDiv=document.getElementById("myPictureID");
         for(var i=0;i<myLen;i++){
             var myCDiv=document.createElement("div");
             myCDiv.setAttribute("class","myGrally");
 
-            var myPDiv=document.getElementById("myPictureID");
             var myPictureDiv=document.createElement("div");
             myPictureDiv.setAttribute("class","myGrallyPicture");
             var myImageAddress=mySearchResult[i][3].toString();
@@ -271,9 +351,95 @@
             myCDiv.appendChild(myBrDiv);
             myCDiv.appendChild(myPriceDiv);
             myCDiv.appendChild(myAmountDiv);
-           
+
             myPDiv.appendChild(myCDiv);
         }
+    }
+
+    function ShowAdministor(){
+        var myPDiv=document.getElementById("myPictureID");
+        for(var i=0;i<myLen;i++){
+            var myCDiv=document.createElement("div");
+            myCDiv.setAttribute("class","myGrally");
+
+            var myPictureDiv=document.createElement("div");
+            myPictureDiv.setAttribute("class","myGrallyPicture");
+            var myImageAddress=mySearchResult[i][3].toString();
+            var myStr='"';
+            /*
+            由于不知道如何用正则进行\替换成/所以采用如下这个办法
+            */
+            for(var j=0;j<myImageAddress.length;j++){
+                if(myImageAddress[j]=="\\"){
+                    myStr+='/';
+                }
+                else{
+                    myStr+=myImageAddress[j];
+                }
+            }
+            myStr+='"';
+            myPictureDiv.style.backgroundImage="url("+myStr+")";
+            //菜品名字显示
+            var myDishnameDiv=document.createElement("div");
+            myDishnameDiv.setAttribute("class","myGrallyDishname");
+            myDishnameDiv.innerHTML="<input id=\"dishnameID"+i+"\"></input>";
+            //菜品销量显示
+            var mySaleDiv=document.createElement("div");
+            mySaleDiv.setAttribute("class","myGrallySale");
+            mySaleDiv.innerHTML="<p>销量 "+mySearchResult[i][6]+"</p>";
+            //菜品评分显示
+            var myMarkDiv=document.createElement("div");
+            myMarkDiv.setAttribute("class","myGrallyMark");
+            var myStr=mySearchResult[i][7].toString();
+            if(myStr.length>3){
+                myStr=myStr.substr(0,3);
+            }
+            myMarkDiv.innerHTML="<p>评分 "+myStr+"</p>";
+            //分割线
+            var myBrDiv=document.createElement("hr");
+            //菜品价格显示
+            var myPriceDiv=document.createElement("div");
+            myPriceDiv.setAttribute("class","myGrallyPrice");
+            myPriceDiv.innerHTML="<p>价格 <input id=\"priceID"+i+"\"></input></p>";
+            //供应状态
+            var myStatusDiv=document.createElement("div");
+            myStatusDiv.setAttribute("class","myGrallyStatus");
+            myStatusDiv.innerHTML="<p>供应状态:</p><select><option id=\"supplyID"+i+"\" value=\"supply\">供应</option><option id=\"unsupplyID"+i+"\"  value=\"unsupply\">不供应</option></select>";
+            var mySupply=mySearchResult[i][4];
+
+            myCDiv.appendChild(myPictureDiv);
+            myCDiv.appendChild(myDishnameDiv);
+            myCDiv.appendChild(mySaleDiv);
+            myCDiv.appendChild(myMarkDiv);
+            myCDiv.appendChild(myBrDiv);
+            myCDiv.appendChild(myPriceDiv);
+            myCDiv.appendChild(myStatusDiv);
+
+            myPDiv.appendChild(myCDiv);
+            if(mySupply=="供应"){
+                document.getElementById("supplyID"+i).setAttribute("selected","selected");
+            }
+            else{
+                document.getElementById("unsupplyID"+i).setAttribute("selected","selected");
+            }
+            document.getElementById("priceID"+i).setAttribute("value",mySearchResult[i][2]);
+            document.getElementById("dishnameID"+i).setAttribute("value",mySearchResult[i][1]);
+        }
+
+        var myCDiv=document.createElement("div");
+        myCDiv.setAttribute("class","myGrally");
+        myCDiv.setAttribute("style","background-color:RGB(245,245,245);");
+        var myAddDiv=document.createElement("div");
+        myAddDiv.setAttribute("class","myAddGrally");
+        myAddDiv.innerHTML="<button  id=\"addbuttonID\" class=\"glyphicon glyphicon-plus\"></button>"
+
+        myCDiv.appendChild(myAddDiv);
+        myPDiv.appendChild(myCDiv);
+        document.getElementById("addbuttonID").setAttribute("onclick","ShowTemFrame()");
+    }
+
+    function ShowTemFrame(){
+        window.alert("ceshi");
     }
 
     function setCookie(cname, cvalue, exdays){
@@ -300,13 +466,17 @@
     function getMySelect() {
         var myInput = document.getElementById("myInputID").value;
         setCookie("myInput", myInput, 0.5);
-        StoreDish();
+        if(myRole!="管理员"){
+            StoreDish();
+        }
         window.open("/","_parent");
     }
 
     function UpType(myValue){
         setCookie("mySort",myValue,0.5);
-        StoreDish();
+        if(myRole!="管理员"){
+            StoreDish();
+        }
         window.open("/","_parent");
     }
 
@@ -363,7 +533,7 @@
             <li><button onclick="UpType('酒水')">酒水</button></li>
         </ul>
     </div>
-   <!-- 新品和销量tag -->
+    <!-- 新品和销量tag -->
     <div class="myorder">
         <ul>
             <li style="margin-left:1%;"><button>新品</button></li>
@@ -373,7 +543,7 @@
     <!-- 图片画廊 -->
     <div class="myPicture_gallery" id="myPictureID">
     </div>
-
+    <div style="clear:both"></div>
 </div>
 
 {% endblock %}

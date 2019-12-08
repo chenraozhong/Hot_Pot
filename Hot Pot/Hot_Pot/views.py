@@ -90,66 +90,6 @@ def login():
         'login.html',
         MYUserMessage=row)
 
-#########################################################
-##以下为个人主页部分
-#########################################################
-def my_homepage_common(type):
-    username=request.cookies.get("username")
-    ID=request.cookies.get("ID")
-    row=""
-    print(username)
-    print(ID)
-    if(username!=None and ID!=None):
-        if type=='borrow':
-            cursor.execute("select 期刊名称,年,卷,期,借阅时间,归还时间 from 借阅 where 姓名='"+username+"'and 编号='"+ID+"';")
-            row=cursor.fetchall()
-        else:
-            cursor.execute("select 姓名,编号,密码,角色,手机号,邮箱 from 用户 where 姓名='"+username+"'and 编号='"+ID+"';")
-            row=cursor.fetchall()
-    return row
-
-@app.route('/my_homepage/person')
-def my_homepage_person():
-    change=request.cookies.get('change')
-    if(change!=None):
-        myStr=change.split(',')
-        cursor.execute("update 用户 set 手机号='"+myStr[0]+"',邮箱='"+myStr[1]+"',密码='"+myStr[2]+"' where 编号='"+myStr[3]+"';")
-        db.commit()
-    row=my_homepage_common('personinfo')
-    lenth=len(row)
-    return render_template(
-        'myhomepage.html',my_homepage_row=row,lenth=lenth,myflag='person')
-
-@app.route('/my_homepage/borrow')
-def my_homepage_borrow():
-    row=my_homepage_common('borrow')
-    lenth=len(row)
-    print(row)
-    return render_template(
-        'myhomepage.html',my_homepage_row=row,lenth=lenth,myflag='borrow')
-
-@app.route('/my_homepage/change')
-def my_homepage_change():
-    row=my_homepage_common('person')
-    lenth=len(row)
-    print(row)
-    return render_template(
-        'myhomepage.html',my_homepage_row=row,lenth=lenth,myflag='change')
-
-@app.route('/restore')
-def restore():
-    myrestore=request.cookies.get("restore");
-    myrestore=myrestore.split(',')
-    ID=request.cookies.get("ID")
-    mytime=time.strftime('%Y.%m.%d',time.localtime(time.time()))
-    cursor.execute("update 借阅 set 归还时间='"+mytime+"'where 编号='"+ID+"' and 期刊名称='"+myrestore[0]+"' and 年='"+myrestore[1]+"' and 卷='"+myrestore[2]+"' and 期='"+myrestore[3]+"'and 借阅时间='"+myrestore[4]+"';")      
-    cursor.execute("update 期刊 set 数量='1'where 期刊名称='"+myrestore[0]+"' and 年='"+myrestore[1]+"' and 卷='"+myrestore[2]+"' and 期='"+myrestore[3]+"';")
-    db.commit()
-    row=my_homepage_common('borrow')
-    lenth=len(row)
-    return render_template(
-        'myhomepage.html',my_homepage_row=row,lenth=lenth,myflag='borrow')
-
 @app.route('/signin')
 def signin():
     cursor.execute("select * from 用户")
@@ -169,6 +109,10 @@ def SigninSuccess():
     db.commit()
     return render_template('signin.html',usersearch=row,usernum=usernum,myflag=True)#myflag=True表示跳转之后直接显示成功
 
+
+#########################################################
+##以下为菜品管理部分
+#########################################################
 @app.route('/managementuser', methods=['GET', 'POST'])
 def managementuser():
     """获取信息"""
@@ -182,7 +126,7 @@ def managementuser():
     length=len(row)
    
     return render_template(
-        'into_sys.html',
+        'index.html',
         title='菜品管理',
         year=datetime.now().year,
         row=row,len=length,

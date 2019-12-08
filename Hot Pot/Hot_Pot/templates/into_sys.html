@@ -255,29 +255,9 @@
             var myPriceDiv=document.createElement("div");
             myPriceDiv.setAttribute("class","myGrallyPrice");
             myPriceDiv.innerHTML="<p>价格 "+mySearchResult[i][2]+"</p>";
-            //数量选择框
-            var myAmountDiv=document.createElement("div");
-            var mySubButton=document.createElement("button");
-            var myAddButton=document.createElement("button");
-            var myShowFrame=document.createElement("input");
-            if(getCookie(mySearchResult[i][0])!='' && getCookie("ID")!=''){
-                myShowFrame.setAttribute("value",getCookie(mySearchResult[i][0]));
-            }
-            else{
-                myShowFrame.setAttribute("value","0");
-            }
-            myShowFrame.setAttribute("id","myFrameID"+i);
-            myShowFrame.setAttribute("disabled","disabled");
-            myAddButton.setAttribute("onclick","AddAmount("+i+")");
-            mySubButton.setAttribute("onclick","SubAmount("+i+")");
-
-            myAmountDiv.setAttribute("class","myGrallyAmount");
-            myAmountDiv.appendChild(mySubButton);
-            mySubButton.innerHTML="<span class=\"glyphicon glyphicon-minus\"></span>";
-            myAmountDiv.appendChild(myShowFrame);
-            myAddButton.innerHTML="<span class=\"glyphicon glyphicon-plus\"></span>";
-            myAmountDiv.appendChild(myAddButton);
-
+            //供应状态
+            var myStatusDiv=document.createElement("div");
+            myStatusDiv.innerHTML="<p>供应状态: </p>";
 
             myCDiv.appendChild(myPictureDiv);
             myCDiv.appendChild(myDishnameDiv);
@@ -285,7 +265,7 @@
             myCDiv.appendChild(myMarkDiv);
             myCDiv.appendChild(myBrDiv);
             myCDiv.appendChild(myPriceDiv);
-            myCDiv.appendChild(myAmountDiv);
+            myCDiv.appendChild(myStatusDiv);
 
             myPDiv.appendChild(myCDiv);
         }
