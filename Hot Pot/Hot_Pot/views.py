@@ -40,7 +40,7 @@ def common():
 
     return row,myDishSet
 
-@app.route('/')
+@app.route('/',methods=['POST','GET'])
 @app.route('/home',methods=['POST'])
 def home():
     """Renders the home page.""" 
@@ -53,7 +53,19 @@ def home():
             myRow+=tuple(cursor.fetchall())
         row=myRow
     length=len(row)
-   
+    if request.method=="GET":
+
+        myDishID=request.cookies.get("UpdateDishID")
+        myIndex=request.cookies.get("UpdateIndex")
+        myDishName=request.cookies.get("UpdateDishName")
+        myStatus=request.cookies.get("UpdateStatus")
+        myPrice=request.cookies.get("UpdatePrice")
+        myPicture=request.cookies.get("UpdatePictureAdd"+myIndex)
+        
+        myStr="update 菜单静态表 set 菜品名='"+myDishName+"',价格='"+myPrice+"',图片地址='"+ myPicture+"',供应状态='"+myStatus+"' where 菜品ID='"+myDishID+"';"
+        cursor.execute(myStr)
+        db.commit()
+
     return render_template(
         'index.html',
         title='Home Page',

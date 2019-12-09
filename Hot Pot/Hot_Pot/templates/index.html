@@ -83,14 +83,13 @@
             display: inline;
             margin-left: 3%;
         }
-    
-    .myPicture_gallery{
-        
+
+    .myPicture_gallery {
     }
 
     .myGrally {
         display: inline-block;
-        float:left;
+        float: left;
         margin-top: 3%;
         margin-left: 7%;
         width: 25%;
@@ -98,29 +97,32 @@
         border: 1px solid gray;
         background-color: white;
     }
-    .myAddGrally{
+
+    .myAddGrally {
         display: inline-block;
         width: 45%;
         height: 45%;
-        margin-top:25%;
-        margin-left:28%;
+        margin-top: 25%;
+        margin-left: 28%;
         border: 1px solid gray;
         background-color: gray;
-        border-radius:50%;
+        border-radius: 50%;
     }
-    .myAddGrally span{
-        padding-top:9%;
-        padding-left:21%;
-        font-size:500%;
-    }
-    .myAddGrally button{
-        border-radius:50%;
-        width:100%;
-        height:100%;
-        background-color:white;
-        font-size:500%;
-        color:rgb(114, 114, 122);
-    }
+
+        .myAddGrally span {
+            padding-top: 9%;
+            padding-left: 21%;
+            font-size: 500%;
+        }
+
+        .myAddGrally button {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            font-size: 500%;
+            color: rgb(114, 114, 122);
+        }
 
     .myGrallyPicture {
         width: 100%;
@@ -131,20 +133,21 @@
     .myGrallyDishname {
         height: 10%;
         width: 100%;
-        text-align:center;
+        text-align: center;
     }
 
         .myGrallyDishname p {
             font-size: 150%;
             text-align: center;
         }
-        .myGrallyDishname input{
-            height:100%;
-            width:80%;
-            font-size:150%;
-            text-align:center;
-            border:1px solid gray;
-            background-color:RGB(245,245,245);
+
+        .myGrallyDishname input {
+            height: 100%;
+            width: 80%;
+            font-size: 150%;
+            text-align: center;
+            border: 1px solid gray;
+            background-color: RGB(245,245,245);
         }
 
     .myGrallySale {
@@ -231,6 +234,34 @@
         .myGrallyStatus select {
             border: 1px solid gray;
         }
+    .myGrallySubmit{
+        width:80%;
+        margin-left:10%;
+        border:1px solid gray;
+        border-radius:10px;
+    }
+    .myInputDishInfo{
+        display:none;
+        position:fixed;
+        opacity:1;
+        z-index:10;
+        left:35%;
+        top:25%;
+        width:27%;
+        height:50%;
+        background-color:white;
+    }
+    .myInputDishInfo form{
+        margin-left:10%;
+        margin-top:10%;
+    }
+    .myInputDishInfo input{
+        display:block;
+        width:80%;
+        border:1px solid gray;
+        border-radius:3px ;
+        margin-bottom:2%;
+    }
 </style>
 
 <script>
@@ -362,10 +393,10 @@
             var myCDiv=document.createElement("div");
             myCDiv.setAttribute("class","myGrally");
 
-            var myPictureDiv=document.createElement("div");
+            var myPictureDiv=document.createElement("img");
             myPictureDiv.setAttribute("class","myGrallyPicture");
             var myImageAddress=mySearchResult[i][3].toString();
-            var myStr='"';
+            var myStr='';
             /*
             由于不知道如何用正则进行\替换成/所以采用如下这个办法
             */
@@ -377,43 +408,52 @@
                     myStr+=myImageAddress[j];
                 }
             }
-            myStr+='"';
-            myPictureDiv.style.backgroundImage="url("+myStr+")";
+            myPictureDiv.src=myStr;
+            setCookie("UpdatePictureAdd"+i,myStr,0.1);
+            myPictureDiv.setAttribute("onclick","ChangePicture("+i+")");
+            myPictureDiv.id="pictureID"+i;
+            myPictureDiv.name="picturename"+i;
+            //以下换成表单的形式进行显示
+            var myForm=document.createElement("form");
+            //myForm.method="POST";
             //菜品名字显示
             var myDishnameDiv=document.createElement("div");
             myDishnameDiv.setAttribute("class","myGrallyDishname");
-            myDishnameDiv.innerHTML="<input id=\"dishnameID"+i+"\"></input>";
-            //菜品销量显示
-            var mySaleDiv=document.createElement("div");
-            mySaleDiv.setAttribute("class","myGrallySale");
-            mySaleDiv.innerHTML="<p>销量 "+mySearchResult[i][6]+"</p>";
-            //菜品评分显示
-            var myMarkDiv=document.createElement("div");
-            myMarkDiv.setAttribute("class","myGrallyMark");
-            var myStr=mySearchResult[i][7].toString();
-            if(myStr.length>3){
-                myStr=myStr.substr(0,3);
-            }
-            myMarkDiv.innerHTML="<p>评分 "+myStr+"</p>";
+            myDishnameDiv.innerHTML="<input id=\"dishnameID"+i+"\" name=\"dishname"+i+"\" value=\""+mySearchResult[i][1]+"\"></input>";
             //分割线
             var myBrDiv=document.createElement("hr");
             //菜品价格显示
             var myPriceDiv=document.createElement("div");
             myPriceDiv.setAttribute("class","myGrallyPrice");
-            myPriceDiv.innerHTML="<p>价格 <input id=\"priceID"+i+"\"></input></p>";
+            myPriceDiv.innerHTML="<p>价格 <input id=\"priceID"+i+"\" name=\"price"+i+"\" value=\""+mySearchResult[i][2]+"\"></input></p>";
             //供应状态
             var myStatusDiv=document.createElement("div");
             myStatusDiv.setAttribute("class","myGrallyStatus");
-            myStatusDiv.innerHTML="<p>供应状态:</p><select><option id=\"supplyID"+i+"\" value=\"supply\">供应</option><option id=\"unsupplyID"+i+"\"  value=\"unsupply\">不供应</option></select>";
+            myStatusDiv.innerHTML="<p>供应状态:</p><select id=\"selectID"+i+"\"><option id=\"supplyID"+i+"\" value=\"供应\" name=\"supply"+i+"\">供应</option><option id=\"unsupplyID"+i+"\"  value=\"不供应\" name=\"unsupply"+i+"\">不供应</option></select>";
             var mySupply=mySearchResult[i][4];
+            //图片修改（在网页中不进行显示）
+            var myPictureChange=document.createElement("input");
+            myPictureChange.type="file";
+            myPictureChange.name="pictadd"+i;
+            myPictureChange.id="pictaddID"+i;
+            
+            myPictureChange.style.display="none";
+            //提交修改
+            var mySubmitDiv=document.createElement("input");
+            mySubmitDiv.setAttribute("type","submit");
+            mySubmitDiv.setAttribute("value","确定修改");
+            mySubmitDiv.setAttribute("class","myGrallySubmit");
+            mySubmitDiv.setAttribute("onclick","SetStatus("+i+")");
 
-            myCDiv.appendChild(myPictureDiv);
-            myCDiv.appendChild(myDishnameDiv);
-            myCDiv.appendChild(mySaleDiv);
-            myCDiv.appendChild(myMarkDiv);
-            myCDiv.appendChild(myBrDiv);
-            myCDiv.appendChild(myPriceDiv);
-            myCDiv.appendChild(myStatusDiv);
+            myForm.appendChild(myPictureDiv);
+            myForm.appendChild(myDishnameDiv);
+            myForm.appendChild(myBrDiv);
+            myForm.appendChild(myPriceDiv);
+            myForm.appendChild(myStatusDiv);
+            myForm.appendChild(myPictureChange);
+            myForm.appendChild(mySubmitDiv);
+
+            myCDiv.appendChild(myForm);
 
             myPDiv.appendChild(myCDiv);
             if(mySupply=="供应"){
@@ -422,8 +462,6 @@
             else{
                 document.getElementById("unsupplyID"+i).setAttribute("selected","selected");
             }
-            document.getElementById("priceID"+i).setAttribute("value",mySearchResult[i][2]);
-            document.getElementById("dishnameID"+i).setAttribute("value",mySearchResult[i][1]);
         }
 
         var myCDiv=document.createElement("div");
@@ -438,8 +476,35 @@
         document.getElementById("addbuttonID").setAttribute("onclick","ShowTemFrame()");
     }
 
+    function SetStatus(i){
+        var mySelect=document.getElementById("selectID"+i);
+        var myIndex=mySelect.selectedIndex;
+        var myDishName=document.getElementById("dishnameID"+i);
+        var myPrice=document.getElementById("priceID"+i);
+        
+        setCookie("UpdatePrice",myPrice.value,0.1);
+        setCookie("UpdateDishName",myDishName.value,0.1);
+        setCookie("UpdateStatus",mySelect.options[myIndex].value,0.1);
+        setCookie("UpdateDishID",mySearchResult[i][0],0.1);
+        setCookie("UpdateIndex",i,0.1);
+    }
+
     function ShowTemFrame(){
-        window.alert("ceshi");
+        document.body.style.opacity="0.5";
+        $('.myInputDishInfo').fadeIn();
+    }
+
+    function ChangePicture(i){
+        //更改index=i的图片地址
+        $("#pictaddID"+i).click();
+        document.getElementById("pictaddID"+i).addEventListener("change",function(){
+            var myAdd=$("#pictaddID"+i).val();
+            myAdd=myAdd.split("\\");
+            var myPic="../static/菜品照片/";
+            myPic+=myAdd[2];
+            document.getElementById("pictureID"+i).src=myPic;
+            setCookie("UpdatePictureAdd"+i,myPic,0.1);
+        })
     }
 
     function setCookie(cname, cvalue, exdays){
@@ -544,6 +609,18 @@
     <div class="myPicture_gallery" id="myPictureID">
     </div>
     <div style="clear:both"></div>
+    <!-- 用于填写菜品信息的临时框 -->
+    <div class="myInputDishInfo">
+        <form>
+            <label for="myDishNameID">菜品名字</label>
+            <input type="text" id="myDishNameID" />
+            <label for="myDishPriceID">价格</label>
+            <input type="number" />
+            <label for="myImageAddressID">图片地址</label>
+            <input type="file" id="myImageAddressID" />
+            <input type="submit" value="提交" style="margin-top:4%;"/>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
