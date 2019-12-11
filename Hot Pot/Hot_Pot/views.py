@@ -47,7 +47,7 @@ def login():
     return row
 
 @app.route('/',methods=['POST','GET'])
-@app.route('/home',methods=['POST'])
+@app.route('/home',methods=['POST','GET'])
 def home():
     """Renders the home page.""" 
     
@@ -83,8 +83,6 @@ def home():
             inPict=request.cookies.get("InsertPictAdd")
             myStr="insert into 菜单静态表 values('"+inDishID+"','"+inDishName+"',"+inDishPrice+",'"+inPict+"','"+inDishStatus+"','');"
             cursor.execute(myStr)
-            #myStr="insert into 菜单动态表 values('"+inDishID+"',0,0,0);"
-            #print(myStr)
             cursor.execute("insert into 菜单动态表 values('"+inDishID+"',0,0,0);")
             cursor.execute("insert into 菜类 values ('"+inDishID+"','"+inDishType+"');")
             db.commit()

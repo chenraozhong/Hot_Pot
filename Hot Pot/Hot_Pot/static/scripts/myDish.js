@@ -29,8 +29,12 @@ function ShowResult() {
 function ShowCustomer() {
     var myPDiv = document.getElementById("myPictureID");
     for (var i = 0; i < myLen; i++) {
+
         var myCDiv = document.createElement("div");
         myCDiv.setAttribute("class", "myGrally");
+        if (mySearchResult[i][4] == "不供应") {
+            myCDiv.setAttribute("style", "display:none;");
+        }
 
         var myPictureDiv = document.createElement("div");
         myPictureDiv.setAttribute("class", "myGrallyPicture");
