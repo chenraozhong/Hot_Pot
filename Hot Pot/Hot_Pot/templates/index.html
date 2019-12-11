@@ -1,6 +1,7 @@
 ﻿{% extends "layout.html" %}
 {% block head %}
 {{super()}}
+<script type="text/javascript" src="../static/scripts/myDish.js"></script>
 <style>
     .myjumbotron {
         margin-top: 0.5%;
@@ -234,343 +235,197 @@
         .myGrallyStatus select {
             border: 1px solid gray;
         }
-    .myGrallySubmit{
-        width:80%;
-        margin-left:10%;
-        border:1px solid gray;
-        border-radius:10px;
+
+    .myGrallySubmit {
+        width: 80%;
+        margin-left: 10%;
+        border: 1px solid gray;
+        border-radius: 10px;
     }
-    .myInputDishInfo{
-        display:none;
-        position:fixed;
-        opacity:1;
-        z-index:10;
-        left:35%;
-        top:25%;
-        width:27%;
-        height:50%;
-        background-color:white;
+
+    .myInputDishInfo {
+        display: none;
+        position: fixed;
+        opacity: 1;
+        z-index: 10;
+        left: 35%;
+        top: 25%;
+        width: 27%;
+        height: 50%;
+        background-color: white;
     }
-    .myInputDishInfo form{
-        margin-left:10%;
-        margin-top:10%;
+
+        .myInputDishInfo form {
+            margin-left: 10%;
+            margin-top: 10%;
+        }
+
+        .myInputDishInfo input {
+            display: block;
+            width: 80%;
+            border: 1px solid gray;
+            border-radius: 3px;
+            margin-bottom: 2%;
+        }
+
+    .myShade {
+        display: none;
+        opacity: 0.6;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9;
+        background-color: gray;
     }
-    .myInputDishInfo input{
-        display:block;
-        width:80%;
-        border:1px solid gray;
-        border-radius:3px ;
-        margin-bottom:2%;
+
+    .login_posi {
+        display: none;
+        z-index: 10;
+        text-align: center;
+        position: absolute;
+        top: 20%;
+        right: 35%;
+        border: 1px solid gray;
+        border-color: black;
+        border-radius: 5px;
+        background-color: white;
+        width: 30%;
     }
+
+    .input_style, .myselect {
+        height: 40px;
+        border-style: outset;
+        margin-top: 30px;
+        border: 1px solid gray;
+        border-radius: 2px;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .login_posi input[type="submit"] {
+        width: 100%;
+        border-style: none;
+        border-color: black;
+        border-radius: 4px;
+        background-color: RGB(255,108,15);
+        font-size: 16px;
+        color: white;
+        margin-top: 30px;
+        margin-bottom: 70px;
+        height: 40px;
+    }
+
+        .login_posi input[type="submit"]:hover {
+            border-style: none;
+            background-color: RGB(255,88,15);
+        }
+
+    .login_posi a {
+        text-decoration: none;
+        font-size: 16px;
+        color: black;
+    }
+
+        .login_posi a.do_left {
+            position: absolute;
+            top: 85%;
+            left: 10%;
+            text-decoration: none;
+        }
+
+        .login_posi a.do_right {
+            position: absolute;
+            top: 85%;
+            right: 10%;
+            text-decoration: none;
+        }
 </style>
 
 <script>
     var mySearchResult={{row|tojson}};
     var myLen={{len|tojson}};
-    var myLead={{LeadFlag|tojson}};
     var myRole=getCookie("role");
     $(document).ready(function(){
-        if(!myLead){
-            window.alert("这本期刊你今日已借过，请改日再借");
-        }
         ShowResult();
         //设成负数起到清除对于cookie的作用
         setCookie("myInput","",-1);
         setCookie("mySort","",-1);
+
     })
 
-    function AddAmount(index){
-        var myShowFrame=document.getElementById("myFrameID"+index);
-        var myValue=myShowFrame.getAttribute("value");
-        myValue++;
-        myShowFrame.setAttribute("value",myValue);
+    function Log_In(){
+        document.getElementById("myShadeID").style="display:block";
+        $("#loginID").fadeIn();
     }
+    //以下函数是属于登录的
+    var myusermessage = {{MYUserMessage|tojson}};
 
-    function SubAmount(index){
-        var myShowFrame=document.getElementById("myFrameID"+index);
-        var myValue=myShowFrame.getAttribute("value");
-        if(myValue!='0'){
-            myValue--;
-        }
-        myShowFrame.setAttribute("value",myValue);
-    }
-
-
-    function ShowResult(){
-        //用于显示图片画廊
-        if(myRole=="管理员"){
-            ShowAdministor();
+    function checkpassword() {
+        var mySelectC=document.getElementById("myselectID");
+        var myRole=mySelectC.options[mySelectC.selectedIndex].text;
+        var name = document.getElementById('usernameID').value;
+        var password = document.getElementById('passwordID').value;
+        if (name == "" || password == "") {
+            window.alert("请输入用户名和密码");
         }
         else{
-            ShowCustomer();
-        }
-    }
-
-    function ShowCustomer(){
-        var myPDiv=document.getElementById("myPictureID");
-        for(var i=0;i<myLen;i++){
-            var myCDiv=document.createElement("div");
-            myCDiv.setAttribute("class","myGrally");
-
-            var myPictureDiv=document.createElement("div");
-            myPictureDiv.setAttribute("class","myGrallyPicture");
-            var myImageAddress=mySearchResult[i][3].toString();
-            var myStr='"';
-            /*
-            由于不知道如何用正则进行\替换成/所以采用如下这个办法
-            */
-            for(var j=0;j<myImageAddress.length;j++){
-                if(myImageAddress[j]=="\\"){
-                    myStr+='/';
-                }
-                else{
-                    myStr+=myImageAddress[j];
+            var myStr=myusermessage.toString();
+            myStr=myStr.split(",");
+            var myID="";
+            var myGrade="";
+            //var myStatus;
+            for(var i=0;i<myStr.length;){
+                if(myStr[i++]==name && myStr[i++]==password && myStr[i++]==myRole){
+                    myID=myStr[i++];
+                    myGrade=myStr[i++];
+                    //myStatus=myStr[i++];
+                    break;
                 }
             }
-            myStr+='"';
-            myPictureDiv.style.backgroundImage="url("+myStr+")";
-            //菜品名字显示
-            var myDishnameDiv=document.createElement("div");
-            myDishnameDiv.setAttribute("class","myGrallyDishname");
-            myDishnameDiv.innerHTML="<p>"+mySearchResult[i][1]+"</p>";
-            //菜品销量显示
-            var mySaleDiv=document.createElement("div");
-            mySaleDiv.setAttribute("class","myGrallySale");
-            mySaleDiv.innerHTML="<p>销量 "+mySearchResult[i][6]+"</p>";
-            //菜品评分显示
-            var myMarkDiv=document.createElement("div");
-            myMarkDiv.setAttribute("class","myGrallyMark");
-            var myStr=mySearchResult[i][7].toString();
-            if(myStr.length>3){
-                myStr=myStr.substr(0,3);
-            }
-            myMarkDiv.innerHTML="<p>评分 "+myStr+"</p>";
-            //分割线
-            var myBrDiv=document.createElement("hr");
-            //菜品价格显示
-            var myPriceDiv=document.createElement("div");
-            myPriceDiv.setAttribute("class","myGrallyPrice");
-            myPriceDiv.innerHTML="<p>价格 "+mySearchResult[i][2]+"</p>";
-            //数量选择框
-            var myAmountDiv=document.createElement("div");
-            var mySubButton=document.createElement("button");
-            var myAddButton=document.createElement("button");
-            var myShowFrame=document.createElement("input");
-            if(getCookie(mySearchResult[i][0])!='' && getCookie("ID")!=''){
-                myShowFrame.setAttribute("value",getCookie(mySearchResult[i][0]));
+            if(myID==""){
+                window.alert(myID);
+                window.alert("用户名或密码错误");
             }
             else{
-                myShowFrame.setAttribute("value","0");
-            }
-            myShowFrame.setAttribute("id","myFrameID"+i);
-            myShowFrame.setAttribute("disabled","disabled");
-            myAddButton.setAttribute("onclick","AddAmount("+i+")");
-            mySubButton.setAttribute("onclick","SubAmount("+i+")");
+                //登录成功
 
-            myAmountDiv.setAttribute("class","myGrallyAmount");
-            myAmountDiv.appendChild(mySubButton);
-            mySubButton.innerHTML="<span class=\"glyphicon glyphicon-minus\"></span>";
-            myAmountDiv.appendChild(myShowFrame);
-            myAddButton.innerHTML="<span class=\"glyphicon glyphicon-plus\"></span>";
-            myAmountDiv.appendChild(myAddButton);
+                setCookie("username",name,0.1);
+                setCookie("ID",myID,0.1);
+                setCookie("role",myRole,0.1);
+                setCookie("grade",myGrade,0.1);
+                //以下为生成订单号模块
+                var date=new Date();
+                var myOrderID="";
+                myOrderID+=date.getFullYear();
+                myOrderID+=(GetNum(date.getMonth())+1);
+                myOrderID+=GetNum(date.getDate());
+                myOrderID+=GetNum(date.getHours());
+                myOrderID+=GetNum(date.getMinutes());
+                myOrderID+=myID;
+                setCookie("OrderID",myOrderID,0.1);
 
-
-            myCDiv.appendChild(myPictureDiv);
-            myCDiv.appendChild(myDishnameDiv);
-            myCDiv.appendChild(mySaleDiv);
-            myCDiv.appendChild(myMarkDiv);
-            myCDiv.appendChild(myBrDiv);
-            myCDiv.appendChild(myPriceDiv);
-            myCDiv.appendChild(myAmountDiv);
-
-            myPDiv.appendChild(myCDiv);
-        }
-    }
-
-    function ShowAdministor(){
-        var myPDiv=document.getElementById("myPictureID");
-        for(var i=0;i<myLen;i++){
-            var myCDiv=document.createElement("div");
-            myCDiv.setAttribute("class","myGrally");
-
-            var myPictureDiv=document.createElement("img");
-            myPictureDiv.setAttribute("class","myGrallyPicture");
-            var myImageAddress=mySearchResult[i][3].toString();
-            var myStr='';
-            /*
-            由于不知道如何用正则进行\替换成/所以采用如下这个办法
-            */
-            for(var j=0;j<myImageAddress.length;j++){
-                if(myImageAddress[j]=="\\"){
-                    myStr+='/';
+                if(myRole=="用户"){
+                    window.open("/","_parent");
                 }
                 else{
-                    myStr+=myImageAddress[j];
+                    window.open("/","_parent");
                 }
             }
-            myPictureDiv.src=myStr;
-            setCookie("UpdatePictureAdd"+i,myStr,0.1);
-            myPictureDiv.setAttribute("onclick","ChangePicture("+i+")");
-            myPictureDiv.id="pictureID"+i;
-            myPictureDiv.name="picturename"+i;
-            //以下换成表单的形式进行显示
-            var myForm=document.createElement("form");
-            //myForm.method="POST";
-            //菜品名字显示
-            var myDishnameDiv=document.createElement("div");
-            myDishnameDiv.setAttribute("class","myGrallyDishname");
-            myDishnameDiv.innerHTML="<input id=\"dishnameID"+i+"\" name=\"dishname"+i+"\" value=\""+mySearchResult[i][1]+"\"></input>";
-            //分割线
-            var myBrDiv=document.createElement("hr");
-            //菜品价格显示
-            var myPriceDiv=document.createElement("div");
-            myPriceDiv.setAttribute("class","myGrallyPrice");
-            myPriceDiv.innerHTML="<p>价格 <input id=\"priceID"+i+"\" name=\"price"+i+"\" value=\""+mySearchResult[i][2]+"\"></input></p>";
-            //供应状态
-            var myStatusDiv=document.createElement("div");
-            myStatusDiv.setAttribute("class","myGrallyStatus");
-            myStatusDiv.innerHTML="<p>供应状态:</p><select id=\"selectID"+i+"\"><option id=\"supplyID"+i+"\" value=\"供应\" name=\"supply"+i+"\">供应</option><option id=\"unsupplyID"+i+"\"  value=\"不供应\" name=\"unsupply"+i+"\">不供应</option></select>";
-            var mySupply=mySearchResult[i][4];
-            //图片修改（在网页中不进行显示）
-            var myPictureChange=document.createElement("input");
-            myPictureChange.type="file";
-            myPictureChange.name="pictadd"+i;
-            myPictureChange.id="pictaddID"+i;
-            
-            myPictureChange.style.display="none";
-            //提交修改
-            var mySubmitDiv=document.createElement("input");
-            mySubmitDiv.setAttribute("type","submit");
-            mySubmitDiv.setAttribute("value","确定修改");
-            mySubmitDiv.setAttribute("class","myGrallySubmit");
-            mySubmitDiv.setAttribute("onclick","SetStatus("+i+")");
-
-            myForm.appendChild(myPictureDiv);
-            myForm.appendChild(myDishnameDiv);
-            myForm.appendChild(myBrDiv);
-            myForm.appendChild(myPriceDiv);
-            myForm.appendChild(myStatusDiv);
-            myForm.appendChild(myPictureChange);
-            myForm.appendChild(mySubmitDiv);
-
-            myCDiv.appendChild(myForm);
-
-            myPDiv.appendChild(myCDiv);
-            if(mySupply=="供应"){
-                document.getElementById("supplyID"+i).setAttribute("selected","selected");
-            }
-            else{
-                document.getElementById("unsupplyID"+i).setAttribute("selected","selected");
-            }
-        }
-
-        var myCDiv=document.createElement("div");
-        myCDiv.setAttribute("class","myGrally");
-        myCDiv.setAttribute("style","background-color:RGB(245,245,245);");
-        var myAddDiv=document.createElement("div");
-        myAddDiv.setAttribute("class","myAddGrally");
-        myAddDiv.innerHTML="<button  id=\"addbuttonID\" class=\"glyphicon glyphicon-plus\"></button>"
-
-        myCDiv.appendChild(myAddDiv);
-        myPDiv.appendChild(myCDiv);
-        document.getElementById("addbuttonID").setAttribute("onclick","ShowTemFrame()");
-    }
-
-    function SetStatus(i){
-        var mySelect=document.getElementById("selectID"+i);
-        var myIndex=mySelect.selectedIndex;
-        var myDishName=document.getElementById("dishnameID"+i);
-        var myPrice=document.getElementById("priceID"+i);
-        
-        setCookie("UpdatePrice",myPrice.value,0.1);
-        setCookie("UpdateDishName",myDishName.value,0.1);
-        setCookie("UpdateStatus",mySelect.options[myIndex].value,0.1);
-        setCookie("UpdateDishID",mySearchResult[i][0],0.1);
-        setCookie("UpdateIndex",i,0.1);
-    }
-
-    function ShowTemFrame(){
-        document.body.style.opacity="0.5";
-        $('.myInputDishInfo').fadeIn();
-    }
-
-    function ChangePicture(i){
-        //更改index=i的图片地址
-        $("#pictaddID"+i).click();
-        document.getElementById("pictaddID"+i).addEventListener("change",function(){
-            var myAdd=$("#pictaddID"+i).val();
-            myAdd=myAdd.split("\\");
-            var myPic="../static/菜品照片/";
-            myPic+=myAdd[2];
-            document.getElementById("pictureID"+i).src=myPic;
-            setCookie("UpdatePictureAdd"+i,myPic,0.1);
-        })
-    }
-
-    function setCookie(cname, cvalue, exdays){
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));//ms:生存周期
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function getMySelect() {
-        var myInput = document.getElementById("myInputID").value;
-        setCookie("myInput", myInput, 0.5);
-        if(myRole!="管理员"){
-            StoreDish();
-        }
-        window.open("/","_parent");
-    }
-
-    function UpType(myValue){
-        setCookie("mySort",myValue,0.5);
-        if(myRole!="管理员"){
-            StoreDish();
-        }
-        window.open("/","_parent");
-    }
-
-    function StoreDish(){
-        //将用户已选的菜品存入cookies中，以保证页面刷新之后，用户的选择还在
-        //在跳入到已选菜单之后，开发人员也能从cookies中读取相关数据，而无需再从数据库中读取
-
-        for(var i=0;i<myLen;i++){
-            var myDishID=mySearchResult[i][0];
-            var myAmount=document.getElementById("myFrameID"+i).getAttribute("value");
-            //判断myDishID是否加入已选菜单中
-            var myTem=getCookie(myDishID);
-            if(myTem==''){
-                setCookiesArray("Dishes",myDishID);
-            }
-            setCookie(myDishID,myAmount,0.1);
         }
     }
-
-    function setCookiesArray(myName,myValue){
-        //将myValue添加到数组myName中（因为无法向cookies中添加array，只能先将array转成str,再存入cookies中）
-        var cookie=getCookie(myName);
-        var myArray=cookie.split("|");
-        myArray.push(myValue);
-        cookie=myArray.join("|");
-        if(cookie.endsWith("\\|")){
-            cookie=cookie.substring(0,cookie.length-1);
+    function GetNum(myNum){
+        var myStr='';
+        if(myNum<=9){
+            myStr+='0';
+            myStr+=myNum;
+            return myStr;
         }
-        setCookie(myName,cookie,0.1);
+        else{
+            return myNum;
+        }
+
     }
 
 </script>
@@ -610,7 +465,7 @@
     </div>
     <div style="clear:both"></div>
     <!-- 用于填写菜品信息的临时框 -->
-    <div class="myInputDishInfo">
+    <div class="myInputDishInfo" id="myInputDishID">
         <form>
             <label for="myDishNameID">菜品名字</label>
             <input type="text" id="myDishNameID" />
@@ -618,9 +473,31 @@
             <input type="number" />
             <label for="myImageAddressID">图片地址</label>
             <input type="file" id="myImageAddressID" />
-            <input type="submit" value="提交" style="margin-top:4%;"/>
+            <input type="submit" value="提交" style="margin-top:4%;" />
         </form>
     </div>
+    <!-- 遮罩层 -->
+    <div class="myShade" id="myShadeID">
+
+    </div>
+    <!-- 登录界面 -->
+    <div class="login_posi" id="loginID">
+        <!--post是数据库访问的方法-->
+        <form onsubmit="checkpassword()">
+            <label for="usernameID"></label>
+            <input type="text" id="usernameID" class="input_style" name="username" placeholder="用户名" />
+            <label for="passwordID"></label>
+            <input type="password" id="passwordID" class="input_style" name="password" placeholder="密码" />
+            <select class="myselect" id="myselectID">
+                <option>用户</option>
+                <option>管理员</option>
+            </select>
+            <input type="submit" value="登录" />
+            <a class="do_left" href="{{url_for('signin')}}" target="_blank" style="text-decoration: none">注册</a>
+            <a class="do_right" href="忘记密码界面" style="text-decoration: none">忘记密码</a>
+        </form>
+    </div>
+
 </div>
 
 {% endblock %}

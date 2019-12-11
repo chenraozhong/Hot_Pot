@@ -40,12 +40,19 @@ def common():
 
     return row,myDishSet
 
+def login():
+    cursor.execute('select 用户名,密码,身份,用户ID,积分 from 用户')
+    row=cursor.fetchall()
+    return row
+
 @app.route('/',methods=['POST','GET'])
 @app.route('/home',methods=['POST'])
 def home():
     """Renders the home page.""" 
     
     row,myDishSet=common()
+    MYUserMessage=login()
+
     if(myDishSet!=''):
         myRow=()
         for myItem in myDishSet:
@@ -53,7 +60,7 @@ def home():
             myRow+=tuple(cursor.fetchall())
         row=myRow
     length=len(row)
-    if request.method=="GET":
+    if request.method=="POST":
 
         myDishID=request.cookies.get("UpdateDishID")
         myIndex=request.cookies.get("UpdateIndex")
@@ -71,7 +78,7 @@ def home():
         title='Home Page',
         year=datetime.now().year,
         row=row,len=length,
-        LeadFlag=True
+        MYUserMessage=MYUserMessage
     )
 
 @app.route('/contact')
@@ -93,14 +100,6 @@ def about():
         year=datetime.now().year,
         message='Your application description page.'
     )
-
-@app.route('/login')
-def login():
-    cursor.execute('select 用户名,密码,身份,用户ID,积分 from 用户')
-    row=cursor.fetchall()
-    return render_template(
-        'login.html',
-        MYUserMessage=row)
 
 @app.route('/signin')
 def signin():

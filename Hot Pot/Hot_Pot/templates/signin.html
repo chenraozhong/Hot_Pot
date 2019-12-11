@@ -249,12 +249,7 @@
             return true;
         }
     }
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
+ 
     function CheckPersonMess(){
         var myname=$('#name').val();
         //检查用户名是否与已用用户相冲突

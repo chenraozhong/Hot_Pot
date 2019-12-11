@@ -9,79 +9,70 @@
     <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
     <script type="text/javascript" src="../static/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../static/scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/myCookies.js"></script>
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
     <style>
-    body{
-        background-color:RGB(245,245,245);
-    }
-        .active {
-    float: left;
-    width: 20%;
-    height: 100%;
-    margin-left: 2%;
-}
-
-.mynavbar {
-    width: 100%;
-    height: 9%;
-    margin-top: -3%;
-    background-color: RGB(245,245,245);
-}
-
-    .mynavbar ul {
-        list-style-type: none;
-        overflow: hidden;
-        padding-left: 20%;
-        height: 100%;
-    }
-
-    .mynavbar li {
-        display: inline-block;
-        margin-left: 4%;
-        padding-bottom: 2%;
-        font-size: 120%;
-    }
-
-        .mynavbar li a {
-            display: inline-block;
-            text-decoration: none;
-            color: black;
+        body {
+            background-color: RGB(245,245,245);
         }
 
-            .mynavbar li a:hover {
+        .active {
+            float: left;
+            width: 20%;
+            height: 100%;
+            margin-left: 2%;
+        }
+
+        .mynavbar {
+            width: 100%;
+            height: 9%;
+            margin-top: -3%;
+            background-color: RGB(245,245,245);
+        }
+
+            .mynavbar ul {
+                list-style-type: none;
+                overflow: hidden;
+                padding-left: 20%;
+                height: 100%;
+            }
+            .mynavbar button{
+                border:none;
+                font-size:120%;
+            }
+            .mynavbar button:hover{
                 color: white;
                 background-color: #f16522;
             }
 
-.iflogin {
-    display: inline;
-}
+            .mynavbar li {
+                display: inline-block;
+                margin-left: 4%;
+                padding-bottom: 2%;
+                font-size: 120%;
+            }
 
-.logout:hover {
-    background-color: #f16522;
-}
+                .mynavbar li a {
+                    display: inline-block;
+                    text-decoration: none;
+                    color: black;
+                }
+
+                    .mynavbar li a:hover {
+                        color: white;
+                        background-color: #f16522;
+                    }
+
+        .iflogin {
+            display: inline;
+        }
+
+        .logout:hover {
+            background-color: #f16522;
+        }
+
     </style>
     <script>
-        function setCookie(cname, cvalue, exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-            var expires = "expires=" + d.toUTCString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-        function getCookie(cname) {
-            var name = cname + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
         function CheckLogin() {
             var user = getCookie("username");
             var grade = getCookie("grade");
@@ -114,32 +105,34 @@
             setCookie("OrderID", "", -0.1);
             setCookie("role", "", -0.1);
         }
+
     </script>
     {% endblock %}
-   
+
 </head>
 
 <body onload="CheckLogin()">
-    {%block navbar%} 
+    {%block navbar%}
     <div class="mynavbar">
         <div class="active"><a href="/"><img src="../static/logo1.png" style="height:100%;width:100%" /></a></div>
         <div style="height:100%;">
-        <ul>
-            <li style="margin-left:27%"><a href="{{ url_for('home') }}">首页</a></li>
-            <li id="dishID"><a href="{{ url_for('home') }}">已选菜单</a></li>
-            <li id="personinfoID"><a href="/">个人信息</a></li>
-            <li id="managementID" style="display:none"><a href="{{ url_for('managementuser') }}">菜品管理</a></li>
-            <li id="gradeID">积分: </li>
-            <li  id="user" style="margin-left:6%;margin-right:0"><a href="/login">登录</a></li>
-            <li  id="slash" style="margin-left:0;margin-right:0;font-size:180%">/</li>
-            <li  id="sigin" style="margin-left:0"><a href="{{url_for('signin')}}">注册</a></li>
-            <li id="username" style="display:none;margin-left:0"><a id="usernametext" href="{{url_for('home')}}"></a></li>
-            <li id="logout"style="display:none"onclick="logout()"><a href="{{ url_for('home') }}">注销</a></li>
-        </ul>
-         </div>
+            <ul>
+                <li style="margin-left:27%"><a href="{{ url_for('home') }}">首页</a></li>
+                <li id="dishID"><a href="{{ url_for('home') }}">已选菜单</a></li>
+                <li id="personinfoID"><a href="/">个人信息</a></li>
+                <li id="managementID" style="display:none"><a href="{{ url_for('managementuser') }}">菜品管理</a></li>
+                <li id="gradeID">积分: </li>
+                <button id="user" style="margin-left:6%;margin-right:0" onclick="Log_In()">登录</button>
+                <li id="slash" style="margin-left:0;margin-right:0;font-size:180%">/</li>
+                <li id="sigin" style="margin-left:0"><a href="{{url_for('signin')}}">注册</a></li>
+                <li id="username" style="display:none;margin-left:0"><a id="usernametext" href="{{url_for('home')}}"></a></li>
+                <li id="logout" style="display:none" onclick="logout()"><a href="{{ url_for('home') }}">注销</a></li>
+            </ul>
+        </div>
         <hr style="margin-top:0%;" />
         <div style="clear:both"></div>
     </div>
+  
     {%endblock%}
     <div>
         {% block pre_content%}{% endblock %}

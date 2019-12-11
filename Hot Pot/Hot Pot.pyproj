@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Hot_Pot\static\content\mystyle.css" />
+    <Content Include="Hot_Pot\static\scripts\myCookies.js" />
+    <Content Include="Hot_Pot\static\scripts\myDish.js" />
     <Content Include="Hot_Pot\templates\content_write.html" />
     <Content Include="Hot_Pot\templates\into_sys%28pre%29.html" />
     <Content Include="Hot_Pot\templates\into_sys%28赵%29.html" />
