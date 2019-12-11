@@ -215,6 +215,11 @@ function ShowTemFrame() {
     $('.myInputDishInfo').fadeIn();
 }
 
+function CloseFrame() {
+    document.getElementById("myShadeID").setAttribute("style", "display:none;");
+    $('.myInputDishInfo').fadeOut();
+}
+
 function ChangePicture(i) {
     //更改index=i的图片地址
     $("#pictaddID" + i).click();

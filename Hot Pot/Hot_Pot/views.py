@@ -35,6 +35,7 @@ def common():
     if(mySort !=None):
         cursor.execute("select 菜品ID from 菜类 where 类名='"+mySort+"';")
         myDishSet=cursor.fetchall()
+        #print(myDishSet)
     else:
         myDishSet=''
 
@@ -59,9 +60,9 @@ def home():
             cursor.execute("select * from view_dishes where 菜品ID='"+myItem[0]+"';")
             myRow+=tuple(cursor.fetchall())
         row=myRow
+        print(row)
     length=len(row)
     if request.method=="POST":
-
         myDishID=request.cookies.get("UpdateDishID")
         myIndex=request.cookies.get("UpdateIndex")
         myDishName=request.cookies.get("UpdateDishName")
@@ -72,7 +73,21 @@ def home():
         myStr="update 菜单静态表 set 菜品名='"+myDishName+"',价格='"+myPrice+"',图片地址='"+ myPicture+"',供应状态='"+myStatus+"' where 菜品ID='"+myDishID+"';"
         cursor.execute(myStr)
         db.commit()
-
+    if request.method=="GET":
+        if(request.cookies.get("InsertFlag")=="true"):
+            inDishName=request.cookies.get("InsertDishName")
+            inDishPrice=request.cookies.get("InsertDishPrice")
+            inDishStatus=request.cookies.get("InsertStatus")
+            inDishType=request.cookies.get("InsertType")
+            inDishID=request.cookies.get("InsertDishID")
+            inPict=request.cookies.get("InsertPictAdd")
+            myStr="insert into 菜单静态表 values('"+inDishID+"','"+inDishName+"',"+inDishPrice+",'"+inPict+"','"+inDishStatus+"','');"
+            cursor.execute(myStr)
+            #myStr="insert into 菜单动态表 values('"+inDishID+"',0,0,0);"
+            #print(myStr)
+            cursor.execute("insert into 菜单动态表 values('"+inDishID+"',0,0,0);")
+            cursor.execute("insert into 菜类 values ('"+inDishID+"','"+inDishType+"');")
+            db.commit()
     return render_template(
         'index.html',
         title='Home Page',

@@ -1,0 +1,63 @@
+﻿/*登录界面的样式*/
+
+.login_posi {
+    display: none;
+    z-index: 10;
+    text-align: center;
+    position: absolute;
+    top: 20%;
+    right: 35%;
+    border: 1px solid gray;
+    border-color: black;
+    border-radius: 5px;
+    background-color: white;
+    width: 30%;
+}
+
+.input_style, .myselect {
+    height: 40px;
+    border-style: outset;
+    margin-top: 30px;
+    border: 1px solid gray;
+    border-radius: 2px;
+    width: 100%;
+    font-size: 16px;
+}
+
+.login_posi input[type="submit"] {
+    width: 100%;
+    border-style: none;
+    border-color: black;
+    border-radius: 4px;
+    background-color: RGB(255,108,15);
+    font-size: 16px;
+    color: white;
+    margin-top: 30px;
+    margin-bottom: 70px;
+    height: 40px;
+}
+
+    .login_posi input[type="submit"]:hover {
+        border-style: none;
+        background-color: RGB(255,88,15);
+    }
+
+.login_posi a {
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+}
+
+    .login_posi a.do_left {
+        position: absolute;
+        top: 85%;
+        left: 10%;
+        text-decoration: none;
+    }
+
+    .login_posi a.do_right {
+        position: absolute;
+        top: 85%;
+        right: 10%;
+        text-decoration: none;
+    }

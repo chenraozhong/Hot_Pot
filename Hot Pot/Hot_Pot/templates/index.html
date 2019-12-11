@@ -2,45 +2,12 @@
 {% block head %}
 {{super()}}
 <script type="text/javascript" src="../static/scripts/myDish.js"></script>
+<script type="text/javascript" src="../static/scripts/login.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/content/myLogin.css" />
+<link rel="stylesheet" type="text/css" href="/static/content/mySearch.css" />
+
 <style>
-    .myjumbotron {
-        margin-top: 0.5%;
-        overflow: hidden;
-        width: 100%;
-        background-image: url("../static/火锅.jpg");
-        background-size: 94% 100%;
-        background-position-x: 55%;
-        background-repeat: no-repeat;
-        height: 45%;
-    }
-
-    .mysearch {
-        border: 1px solid #f16522;
-        float: left;
-        width: 30%;
-        height: 16%;
-        margin-top: 9%;
-        margin-left: 30%;
-        max-width: 30%;
-    }
-
-    .mysearchbtn {
-        outline: none;
-        border: 1px solid #f16522;
-        border-radius: 0px;
-        float: left;
-        margin: 9% 0px 0px 0px;
-        height: 16%;
-        width: 8%;
-        background-color: #f16522;
-        text-align: center;
-        color: white;
-    }
-
-        .mysearchbtn:active {
-            background-color: lightsalmon;
-        }
-
     .myContent {
         width: 94%;
         margin-top: 0.5%;
@@ -251,18 +218,76 @@
         left: 35%;
         top: 25%;
         width: 27%;
-        height: 50%;
+        height: 53%;
         background-color: white;
+        border-style:outset;
+        border-color:gray;
+        border-radius:10px;
     }
-
+    .myInputDishInfo input[type='submit']{
+        width:80%;
+        margin-top:3%;
+        margin-left:10%;
+        border-radius:5%;
+    }
+    .myClose{
+        margin-top:1%;
+        width:100%;
+        height:7%;
+    }
+    .myClose button{
+        border-style:none;
+        border-radius:50%;
+        width:7%;
+        height:100%;
+        margin-left:90%;
+        background-color:RGB(245,245,245);
+    }
         .myInputDishInfo form {
-            margin-left: 10%;
-            margin-top: 10%;
+            /*margin-left: 10%;*/
+            /*margin-top: 10%;*/
         }
 
-        .myInputDishInfo input {
+    #InputPictID {
+        float: left;
+        display: inline-block;
+        width: 40%;
+        height: 35%;
+        margin-top: 4%;
+        margin-left: 5%;
+    }
+    #InputPictID button{
+        width:100%;
+        height:100%;
+        border-style:double;
+    }
+    #InputImgID{
+        width:100%;
+        height:100%;
+        display:none;
+    }
+
+    #InputSelectID {
+        display: inline-block;
+        width: 40%;
+        height: 35%;
+        margin-top: 5%;
+        margin-left: 5%;
+        /*background-color: green;*/
+    }
+    #InputSelectID select{
+        margin-top:10%;
+        width:50%;
+    }
+    #InputNaAndPrID {
+        margin-left: 10%;
+        margin-top: 2%;
+        width:80%;
+    }
+
+        #InputNaAndPrID input {
             display: block;
-            width: 80%;
+            width: 100%;
             border: 1px solid gray;
             border-radius: 3px;
             margin-bottom: 2%;
@@ -279,80 +304,24 @@
         z-index: 9;
         background-color: gray;
     }
-
-    .login_posi {
-        display: none;
-        z-index: 10;
-        text-align: center;
-        position: absolute;
-        top: 20%;
-        right: 35%;
-        border: 1px solid gray;
-        border-color: black;
-        border-radius: 5px;
-        background-color: white;
-        width: 30%;
-    }
-
-    .input_style, .myselect {
-        height: 40px;
-        border-style: outset;
-        margin-top: 30px;
-        border: 1px solid gray;
-        border-radius: 2px;
-        width: 100%;
-        font-size: 16px;
-    }
-
-    .login_posi input[type="submit"] {
-        width: 100%;
-        border-style: none;
-        border-color: black;
-        border-radius: 4px;
-        background-color: RGB(255,108,15);
-        font-size: 16px;
-        color: white;
-        margin-top: 30px;
-        margin-bottom: 70px;
-        height: 40px;
-    }
-
-        .login_posi input[type="submit"]:hover {
-            border-style: none;
-            background-color: RGB(255,88,15);
-        }
-
-    .login_posi a {
-        text-decoration: none;
-        font-size: 16px;
-        color: black;
-    }
-
-        .login_posi a.do_left {
-            position: absolute;
-            top: 85%;
-            left: 10%;
-            text-decoration: none;
-        }
-
-        .login_posi a.do_right {
-            position: absolute;
-            top: 85%;
-            right: 10%;
-            text-decoration: none;
-        }
 </style>
 
 <script>
     var mySearchResult={{row|tojson}};
     var myLen={{len|tojson}};
     var myRole=getCookie("role");
+    setCookie("InsertPictAdd","111",0.1);
+    setCookie("InsertFlag","false",0.1);
     $(document).ready(function(){
         ShowResult();
         //设成负数起到清除对于cookie的作用
         setCookie("myInput","",-1);
         setCookie("mySort","",-1);
-
+        setCookie("InsertDishName",myDishName,-0.1);
+        setCookie("InsertDishPrice",myDishPrice,-0.1);
+        setCookie("InsertStatus",myStatus,-0.1);
+        setCookie("InsertType",myType,-0.1);
+        setCookie("InsertDishID",myDishID,-0.1);
     })
 
     function Log_In(){
@@ -362,70 +331,46 @@
     //以下函数是属于登录的
     var myusermessage = {{MYUserMessage|tojson}};
 
-    function checkpassword() {
-        var mySelectC=document.getElementById("myselectID");
-        var myRole=mySelectC.options[mySelectC.selectedIndex].text;
-        var name = document.getElementById('usernameID').value;
-        var password = document.getElementById('passwordID').value;
-        if (name == "" || password == "") {
-            window.alert("请输入用户名和密码");
-        }
-        else{
-            var myStr=myusermessage.toString();
-            myStr=myStr.split(",");
-            var myID="";
-            var myGrade="";
-            //var myStatus;
-            for(var i=0;i<myStr.length;){
-                if(myStr[i++]==name && myStr[i++]==password && myStr[i++]==myRole){
-                    myID=myStr[i++];
-                    myGrade=myStr[i++];
-                    //myStatus=myStr[i++];
-                    break;
-                }
-            }
-            if(myID==""){
-                window.alert(myID);
-                window.alert("用户名或密码错误");
-            }
-            else{
-                //登录成功
-
-                setCookie("username",name,0.1);
-                setCookie("ID",myID,0.1);
-                setCookie("role",myRole,0.1);
-                setCookie("grade",myGrade,0.1);
-                //以下为生成订单号模块
-                var date=new Date();
-                var myOrderID="";
-                myOrderID+=date.getFullYear();
-                myOrderID+=(GetNum(date.getMonth())+1);
-                myOrderID+=GetNum(date.getDate());
-                myOrderID+=GetNum(date.getHours());
-                myOrderID+=GetNum(date.getMinutes());
-                myOrderID+=myID;
-                setCookie("OrderID",myOrderID,0.1);
-
-                if(myRole=="用户"){
-                    window.open("/","_parent");
-                }
-                else{
-                    window.open("/","_parent");
-                }
-            }
-        }
+    //以下是用于上传照片的
+    function UpPict(){
+        $("#myImageAddID").click();
+        document.getElementById("myImageAddID").addEventListener("change", function () {
+            document.getElementById("ButtonPictID").style="display:none;";
+            document.getElementById("InputImgID").style="display:block";
+            var myAdd = $("#myImageAddID").val();
+            myAdd = myAdd.split("\\");
+            var myPic = "../static/菜品照片/";
+            myPic += myAdd[2];
+            setCookie("InsertPictAdd",myPic,0.1);//在这里存入cookies
+            document.getElementById("InputImgID").src = myPic;
+        })
     }
-    function GetNum(myNum){
-        var myStr='';
-        if(myNum<=9){
-            myStr+='0';
-            myStr+=myNum;
-            return myStr;
-        }
-        else{
-            return myNum;
+    function InsertInfo(){
+        var myPicAdd=document.getElementById("InputImgID").src;
+        var myDishName=document.getElementById("myDishNameID").value;
+        var myDishPrice=document.getElementById("myDishPriceID").value;
+        var mySelect=document.getElementById("InputStatusID");
+        var myStaIndex=mySelect.selectedIndex;
+        var myStatus=mySelect.options[myStaIndex].value;
+        var mySelectType=document.getElementById("InputTypeID");
+        var myTyIndex=mySelectType.selectedIndex;
+        var myType=mySelectType.options[myTyIndex].value;
+
+        //以下为生成菜品ID
+        var date=new Date();
+        var myDishID=date.getTime();
+        
+        setCookie("InsertFlag","true",0.1);
+        if(myDishName=="" || myDishPrice==""){
+            window.alert("请输入完整信息");
+            setCookie("InsertFlag","false",0.1);
         }
 
+        setCookie("InsertDishName",myDishName,0.1);
+        setCookie("InsertDishPrice",myDishPrice,0.1);
+        setCookie("InsertStatus",myStatus,0.1);
+        setCookie("InsertType",myType,0.1);
+        setCookie("InsertDishID",myDishID,0.1);
     }
 
 </script>
@@ -466,16 +411,39 @@
     <div style="clear:both"></div>
     <!-- 用于填写菜品信息的临时框 -->
     <div class="myInputDishInfo" id="myInputDishID">
+            <div class="myClose">
+                <button onclick="CloseFrame()">X</button>
+            </div>
+            <div id="InputPictID">
+                <input type="file" id="myImageAddID" style="display:none" />
+                <button id="ButtonPictID" onclick="UpPict()">上传照片</button>
+                <img id="InputImgID" src="111"/>
+            </div>
         <form>
-            <label for="myDishNameID">菜品名字</label>
-            <input type="text" id="myDishNameID" />
-            <label for="myDishPriceID">价格</label>
-            <input type="number" />
-            <label for="myImageAddressID">图片地址</label>
-            <input type="file" id="myImageAddressID" />
-            <input type="submit" value="提交" style="margin-top:4%;" />
+            <div id="InputSelectID">
+                <label for="InputStatusID">供应状态</label>
+                <select id="InputStatusID">
+                    <option value="供应"/>供应
+                    <option value="不供应"/>不供应
+                </select>
+                <label for="InputTypeID">菜&ensp;&ensp;&ensp;&ensp;类</label>
+                <select id="InputTypeID">
+                    <option value="锅底"/>锅底
+                    <option value="荤菜"/>荤菜
+                    <option value="素菜"/>素菜
+                    <option value="酒水"/>酒水
+                </select>
+            </div>
+            <div id="InputNaAndPrID">
+                <label for="myDishNameID">菜品名字</label>
+                <input type="text" id="myDishNameID" />
+                <label for="myDishPriceID">价格</label>
+                <input type="number" id="myDishPriceID"/>
+            </div>
+            <input type="submit" value="提交" onclick="InsertInfo()"/>
         </form>
     </div>
+    <div style="clear:both;"></div>
     <!-- 遮罩层 -->
     <div class="myShade" id="myShadeID">
 
