@@ -18,6 +18,7 @@ function SubAmount(index) {
 
 function ShowResult() {
     //用于显示图片画廊
+    //window.alert("ahah");
     if (myRole == "管理员") {
         ShowAdministor();
     }

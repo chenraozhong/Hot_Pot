@@ -60,7 +60,6 @@ def home():
             cursor.execute("select * from view_dishes where 菜品ID='"+myItem[0]+"';")
             myRow+=tuple(cursor.fetchall())
         row=myRow
-        print(row)
     length=len(row)
     if request.method=="POST":
         myDishID=request.cookies.get("UpdateDishID")

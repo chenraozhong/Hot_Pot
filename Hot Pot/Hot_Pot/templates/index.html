@@ -380,6 +380,38 @@
         setCookie("InsertDishID",myDishID,0.1);
     }
 
+    function CompareSale(index){
+        return function(a,b){
+            var mya=a[index];
+            var myb=b[index];
+            if(mya>myb){
+                return -1;
+            }
+            else if(mya<myb){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+    }
+
+    function SortSale(){
+        mySearchResult.sort(CompareSale(6));
+        document.getElementById("myPictureID").innerHTML="";
+        ShowResult();
+    }
+    function SortComment(){
+        mySearchResult.sort(CompareSale(7));
+        document.getElementById("myPictureID").innerHTML="";
+        ShowResult();
+    }
+    function SortPrice(){
+        mySearchResult.sort(CompareSale(2));
+        document.getElementById("myPictureID").innerHTML="";
+        ShowResult();
+    }
+
 </script>
 
 {% endblock %}
@@ -408,8 +440,9 @@
     <!-- 新品和销量tag -->
     <div class="myorder">
         <ul>
-            <li style="margin-left:1%;"><button>新品</button></li>
-            <li><button>销量</button></li>
+            <li style="margin-left:1%;"><button onclick="SortComment()">评分</button></li>
+            <li><button onclick="SortSale()">销量</button></li>
+            <li><button onclick="SortPrice()">价格</button></li>
         </ul>
     </div>
     <!-- 图片画廊 -->
