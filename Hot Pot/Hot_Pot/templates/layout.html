@@ -117,16 +117,16 @@
         <div class="active"><a href="/"><img src="../static/logo1.png" style="height:100%;width:100%" /></a></div>
         <div style="height:100%;">
             <ul>
-                <li style="margin-left:27%"><a href="{{ url_for('home') }}">首页</a></li>
-                <li id="dishID"><a href="{{ url_for('home') }}">已选菜单</a></li>
+                <li style="margin-left:27%"><a href="{{ url_for('home',form='else') }}">首页</a></li>
+                <li id="dishID"><a href="{{ url_for('home',form='else') }}">已选菜单</a></li>
                 <li id="personinfoID"><a href="/">个人信息</a></li>
                 <li id="managementID" style="display:none"><a href="{{ url_for('managementuser') }}">菜品管理</a></li>
                 <li id="gradeID">积分: </li>
                 <button id="user" style="margin-left:6%;margin-right:0" onclick="Log_In()">登录</button>
                 <li id="slash" style="margin-left:0;margin-right:0;font-size:180%">/</li>
                 <li id="sigin" style="margin-left:0"><a href="{{url_for('signin')}}">注册</a></li>
-                <li id="username" style="display:none;margin-left:0"><a id="usernametext" href="{{url_for('home')}}"></a></li>
-                <li id="logout" style="display:none" onclick="logout()"><a href="{{ url_for('home') }}">注销</a></li>
+                <li id="username" style="display:none;margin-left:0"><a id="usernametext" href="{{url_for('home',form='else')}}"></a></li>
+                <li id="logout" style="display:none" onclick="logout()"><a href="{{ url_for('home',form='else') }}">注销</a></li>
             </ul>
         </div>
         <hr style="margin-top:0%;" />

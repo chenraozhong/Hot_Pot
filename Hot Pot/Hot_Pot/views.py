@@ -48,8 +48,8 @@ def login():
     return row
 
 @app.route('/',methods=['POST','GET'])
-@app.route('/home',methods=['POST','GET'])
-def home():
+@app.route('/home/<form>',methods=['POST','GET'])
+def home(form='dish'):
     """Renders the home page.""" 
     
     row,myDishSet=common()
@@ -85,14 +85,22 @@ def home():
             myStr="insert into 菜单静态表 values('"+inDishID+"','"+inDishName+"',"+inDishPrice+",'"+inPict+"','"+inDishStatus+"','');"
             cursor.execute(myStr)
             cursor.execute("insert into 菜单动态表 values('"+inDishID+"',0,0,0);")
+            myStr="insert into 菜类 values ('"+inDishID+"','"+inDishType+"');"
+            print(myStr)
             cursor.execute("insert into 菜类 values ('"+inDishID+"','"+inDishType+"');")
             db.commit()
+    if(form=='login'):
+        myType='login'
+    else:
+        myType='else'
+
     return render_template(
         'index.html',
         title='Home Page',
         year=datetime.now().year,
         row=row,len=length,
-        MYUserMessage=MYUserMessage
+        MYUserMessage=MYUserMessage,
+        type=myType
     )
 
 @app.route('/contact')
@@ -115,7 +123,7 @@ def about():
         message='Your application description page.'
     )
 
-@app.route('/signin')
+@app.route('/signin',methods=['POST','GET'])
 def signin():
     cursor.execute("select * from 用户")
     row=cursor.fetchall()
