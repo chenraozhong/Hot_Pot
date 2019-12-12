@@ -196,6 +196,10 @@
         z-index: 9;
         background-color: black;
     }
+     .RMB{
+        font-size:90%;
+        color:rgb(255, 172, 0);
+    }
 </style>
 
 <script>
@@ -248,22 +252,6 @@
             StoreDish();
         }
         window.open("/", "_parent");
-    }
-
-    function StoreDish() {
-        //将用户已选的菜品存入cookies中，以保证页面刷新之后，用户的选择还在
-        //在跳入到已选菜单之后，开发人员也能从cookies中读取相关数据，而无需再从数据库中读取
-        for (var i = 0; i < myLen; i++) {
-            var myDishID = mySearchResult[i][0];
-            var myAmount = document.getElementById("myFrameID" + i).getAttribute("value");
-            //判断myDishID是否加入已选菜单中
-            var myTem = getCookie(myDishID);
-           
-            if (myTem == '') {
-                setCookiesArray("Dishes", myDishID);
-            }
-            setCookie(myDishID, myAmount, 0.1);
-        }
     }
 
     function Log_In(){

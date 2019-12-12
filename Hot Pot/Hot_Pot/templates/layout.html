@@ -126,12 +126,24 @@
                 }
             }
         }
+
+        function DeleteCookiesArray(myName) {
+            //将某cookies组的信息全部删除
+            var cookie = getCookie(myName);
+            var myArray = cookie.split("_");
+            for (var i = 0; i < myArray.length; i++) {
+                setCookie(myArray[i], "", -1);
+            }
+            setCookie("Dishes", '', -1);
+        }
+
         function logout() {
             setCookie("username", "", -0.1);
             setCookie("ID", "", -0.1);
             setCookie("grade", "", -0.1);
             setCookie("OrderID", "", -0.1);
             setCookie("role", "", -0.1);
+            DeleteCookiesArray("Dishes");
         }
 
         function ShowSelect() {
@@ -154,9 +166,9 @@
         <div class="active"><a href="/"><img src="../static/logo1.png" style="height:100%;width:100%" /></a></div>
         <div style="height:100%;">
             <ul id="navbarulID">
-                <li style="margin-left:7%"><a href="{{ url_for('home',form='else') }}">首页</a></li>
-                <li id="dishID"><a href="{{ url_for('home',form='else') }}">已选菜单</a></li>
-                <li id="personinfoID"><a href="/">个人信息</a></li>
+                <li style="margin-left:7%"><a href="{{ url_for('home',form='else') }}" onclick="StoreDish()">首页</a></li>
+                <li id="dishID"><a href="{{ url_for('order_hand') }}" onclick="StoreDish()">已选菜单</a></li>
+                <li id="personinfoID"><a href="/" onclick="StoreDish()">个人信息</a></li>
                 <li id="gradeID">积分: </li>
                 <button id="user" style="margin-left:6%;margin-right:0" onclick="Log_In()">登录</button>
                 <li id="slash" style="margin-left:0;margin-right:0;font-size:180%">/</li>
@@ -165,8 +177,8 @@
                     <button id="userbuttonID" onclick="ShowSelect()">
                     </button>
                     <ul id="userselectID">
-                        <li><a href="/">个人信息</a></li>
-                        <li><a href="/">历史订单</a></li>
+                        <li><a href="/" onclick="StoreDish()">个人信息</a></li>
+                        <li><a href="/" onclick="StoreDish()">历史订单</a></li>
                     </ul>
                 </li>
                 <li id="logout" style="display:none" onclick="logout()"><a href="{{ url_for('home',form='else') }}">注销</a></li>

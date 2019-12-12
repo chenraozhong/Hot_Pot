@@ -146,22 +146,23 @@ def SigninSuccess():
 #########################################################
 ##以下为菜品管理部分
 #########################################################
-@app.route('/managementuser', methods=['GET', 'POST'])
-def managementuser():
-    """获取信息"""
-    row,myDishSet=common()
-    if(myDishSet!=''):
-        myRow=()
-        for myItem in myDishSet:
-            cursor.execute("select * from view_dishes where 菜品ID='"+myItem[0]+"';")
-            myRow+=tuple(cursor.fetchall())
-        row=myRow
+@app.route('/order_hand', methods=['GET', 'POST'])
+def order_hand():
+    myDish=request.cookies.get("Dishes")
+    row=()
+    if(myDish!=None):
+        myDish=myDish.split('_')
+        for myItem in myDish:
+            if(myItem!=''):
+                cursor.execute("select * from 菜单静态表 where 菜品ID='"+myItem+"'")
+                row+=tuple(cursor.fetchall())
+    
     length=len(row)
-   
     return render_template(
-        'index.html',
-        title='菜品管理',
+        'order_handing.html',
+        title='已选订单',
+        mySearchResult=row,
+        len=length,
         year=datetime.now().year,
-        row=row,len=length,
-        LeadFlag=True
     )
+

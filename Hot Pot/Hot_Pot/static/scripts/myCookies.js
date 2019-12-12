@@ -33,3 +33,30 @@ function checkCookie() {
         }
     }
 }
+
+
+function StoreDish() {
+    //将用户已选的菜品存入cookies中，以保证页面刷新之后，用户的选择还在
+    //在跳入到已选菜单之后，开发人员也能从cookies中读取相关数据，而无需再从数据库中读取
+    for (var i = 0; i < myLen; i++) {
+        var myDishes = getCookie("Dishes");
+        var myDishID = mySearchResult[i][0];
+        var myAmount = document.getElementById("myFrameID" + i).getAttribute("value");
+        if (myAmount != '0') {
+            //判断myDishID是否加入已选菜单中
+            if (myDishes.includes(myDishID) == false) {
+                setCookiesArray("Dishes", myDishID);
+            }
+        }
+        else {
+            //数量为0，将其从Dishes中删除
+            var reg = new RegExp(myDishID + "_", "g");
+            var reg2 = new RegExp("_" + myDishID, "g");
+            var myDishes = getCookie("Dishes");
+            myDishes = myDishes.replace(reg, '');
+            myDishes = myDishes.replace(reg2, '');
+            setCookie("Dishes", myDishes, 0.1);
+        }
+        setCookie(myDishID, myAmount, 0.1);
+    }
+}
