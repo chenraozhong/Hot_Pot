@@ -30,7 +30,7 @@
             background-color: RGB(245,245,245);
         }
 
-            .mynavbar ul {
+            #navbarulID {
                 list-style-type: none;
                 overflow: hidden;
                 padding-left: 20%;
@@ -45,14 +45,14 @@
                 background-color: #f16522;
             }
 
-            .mynavbar li {
+            #navbarulID li {
                 display: inline-block;
                 margin-left: 4%;
                 padding-bottom: 2%;
                 font-size: 120%;
             }
 
-                .mynavbar li a {
+                #navbarulID li a {
                     display: inline-block;
                     text-decoration: none;
                     color: black;
@@ -71,6 +71,34 @@
             background-color: #f16522;
         }
 
+        #userselectID{
+            position:absolute;
+            display:none;
+            background-color:white;
+            width:8%;
+        }
+        #userselectID ul{
+            height:100%;
+            width:100%;
+            margin-left:50%;
+        }
+        #userselectID li{
+            display:block;
+            /*background-color:green;*/
+            margin-left:-40%;
+            margin-top:6%;
+            font-size:80%;
+            width:100%;
+        }
+        #userselectID a{
+            width:100%;
+        }
+        #userbuttonID{
+            display:inline-block;
+            font-size:100%;
+            /*background-color:RGB(245,245,245);*/
+        }
+
     </style>
     <script>
         function CheckLogin() {
@@ -82,15 +110,15 @@
                 document.getElementById("sigin").style = ("display:none");
                 document.getElementById("username").style = ("display:inline-block;margin-left:6%");
                 document.getElementById("logout").style = ("display:inline-block;margin-left:20px");
-                document.getElementById("usernametext").innerHTML = user;
+                document.getElementById("userbuttonID").innerHTML = user;
                 document.getElementById("gradeID").innerHTML = "积分: " + grade;
                 var Role = getCookie("role");
                 if (Role == '管理员') {
-                    $("#managementID").css("display", "inline-block");
                     $("#gradeID").css("display", "none");
                     $("#dishID").css("display", "none");
                     $("#personinfoID").css("display", "none");
-                    $("#username").css("margin-left", "25%");
+                    $("#username").css("margin-left", "35%");
+                    document.getElementById("username").innerHTML = user;
                 }
                 else {
                     $("#managementID").css("display", "none");
@@ -106,6 +134,15 @@
             setCookie("role", "", -0.1);
         }
 
+        function ShowSelect() {
+            document.getElementById("userselectID").style = "display:block;";
+            document.getElementById("userbuttonID").setAttribute("onclick", "HiddenSelect()");
+        }
+        function HiddenSelect() {
+            document.getElementById("userselectID").style = "display:none;";
+            document.getElementById("userbuttonID").setAttribute("onclick", "ShowSelect()");
+        }
+
     </script>
     {% endblock %}
 
@@ -116,16 +153,22 @@
     <div class="mynavbar">
         <div class="active"><a href="/"><img src="../static/logo1.png" style="height:100%;width:100%" /></a></div>
         <div style="height:100%;">
-            <ul>
-                <li style="margin-left:27%"><a href="{{ url_for('home',form='else') }}">首页</a></li>
+            <ul id="navbarulID">
+                <li style="margin-left:7%"><a href="{{ url_for('home',form='else') }}">首页</a></li>
                 <li id="dishID"><a href="{{ url_for('home',form='else') }}">已选菜单</a></li>
                 <li id="personinfoID"><a href="/">个人信息</a></li>
-                <li id="managementID" style="display:none"><a href="{{ url_for('managementuser') }}">菜品管理</a></li>
                 <li id="gradeID">积分: </li>
                 <button id="user" style="margin-left:6%;margin-right:0" onclick="Log_In()">登录</button>
                 <li id="slash" style="margin-left:0;margin-right:0;font-size:180%">/</li>
                 <li id="sigin" style="margin-left:0"><a href="{{url_for('signin')}}">注册</a></li>
-                <li id="username" style="display:none;margin-left:0"><a id="usernametext" href="{{url_for('home',form='else')}}"></a></li>
+                <li id="username" style="display:none;margin-left:0">
+                    <button id="userbuttonID" onclick="ShowSelect()">
+                    </button>
+                    <ul id="userselectID">
+                        <li><a href="/">个人信息</a></li>
+                        <li><a href="/">历史订单</a></li>
+                    </ul>
+                </li>
                 <li id="logout" style="display:none" onclick="logout()"><a href="{{ url_for('home',form='else') }}">注销</a></li>
             </ul>
         </div>
