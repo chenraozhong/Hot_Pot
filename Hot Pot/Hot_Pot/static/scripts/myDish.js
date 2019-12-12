@@ -18,7 +18,6 @@ function SubAmount(index) {
 
 function ShowResult() {
     //用于显示图片画廊
-    //window.alert("ahah");
     if (myRole == "管理员") {
         ShowAdministor();
     }
@@ -220,9 +219,14 @@ function ShowTemFrame() {
     $('.myInputDishInfo').fadeIn();
 }
 
-function CloseFrame() {
+function CloseFrame(i) {
     document.getElementById("myShadeID").setAttribute("style", "display:none;");
-    $('.myInputDishInfo').fadeOut();
+    if (i == 1) {
+        $('.myInputDishInfo').fadeOut();
+    }
+    else {
+        $('#loginID').fadeOut();
+    }
 }
 
 function ChangePicture(i) {
@@ -238,37 +242,12 @@ function ChangePicture(i) {
     })
 }
 
-function getMySelect() {
-    var myInput = document.getElementById("myInputID").value;
-    setCookie("myInput", myInput, 0.5);
-    if (myRole != "管理员") {
-        StoreDish();
-    }
-    window.open("/", "_parent");
-}
-
 function UpType(myValue) {
     setCookie("mySort", myValue, 0.5);
     if (myRole != "管理员") {
         StoreDish();
     }
     window.open("/", "_parent");
-}
-
-function StoreDish() {
-    //将用户已选的菜品存入cookies中，以保证页面刷新之后，用户的选择还在
-    //在跳入到已选菜单之后，开发人员也能从cookies中读取相关数据，而无需再从数据库中读取
-
-    for (var i = 0; i < myLen; i++) {
-        var myDishID = mySearchResult[i][0];
-        var myAmount = document.getElementById("myFrameID" + i).getAttribute("value");
-        //判断myDishID是否加入已选菜单中
-        var myTem = getCookie(myDishID);
-        if (myTem == '') {
-            setCookiesArray("Dishes", myDishID);
-        }
-        setCookie(myDishID, myAmount, 0.1);
-    }
 }
 
 function setCookiesArray(myName, myValue) {

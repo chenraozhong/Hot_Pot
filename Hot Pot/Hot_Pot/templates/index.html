@@ -6,6 +6,8 @@
 
 <link rel="stylesheet" type="text/css" href="/static/content/myLogin.css" />
 <link rel="stylesheet" type="text/css" href="/static/content/mySearch.css" />
+<link rel="stylesheet" type="text/css" href="/static/content/myGrally.css" />
+
 
 <style>
     .myContent {
@@ -44,7 +46,6 @@
         background-color: white;
         padding-top: 0.3%;
         height: 5%;
-        font-size: 100%;
     }
 
         .myorder li {
@@ -52,162 +53,45 @@
             margin-left: 3%;
         }
 
-    .myPicture_gallery {
-    }
-
-    .myGrally {
-        display: inline-block;
-        float: left;
-        margin-top: 3%;
-        margin-left: 7%;
-        width: 25%;
-        height: 55%;
-        border: 1px solid gray;
+        .myorder span {
+            font-size: 60%;
+            height: 50%;
+        }
+        .myorder button {
+        border-style: none;
         background-color: white;
+        width:6%;
+        height:100%;
+        text-align:left;
+        /*background-color:green;*/
     }
 
-    .myAddGrally {
-        display: inline-block;
-        width: 45%;
-        height: 45%;
-        margin-top: 25%;
-        margin-left: 28%;
-        border: 1px solid gray;
-        background-color: gray;
-        border-radius: 50%;
-    }
-
-        .myAddGrally span {
-            padding-top: 9%;
-            padding-left: 21%;
-            font-size: 500%;
-        }
-
-        .myAddGrally button {
-            border-radius: 50%;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            font-size: 500%;
-            color: rgb(114, 114, 122);
-        }
-
-    .myGrallyPicture {
-        width: 100%;
-        height: 70%;
-        background-size: 100% 100%;
-    }
-
-    .myGrallyDishname {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-    }
-
-        .myGrallyDishname p {
-            font-size: 150%;
-            text-align: center;
-        }
-
-        .myGrallyDishname input {
-            height: 100%;
-            width: 80%;
-            font-size: 150%;
-            text-align: center;
-            border: 1px solid gray;
+        .myorder button:hover {
             background-color: RGB(245,245,245);
         }
 
-    .myGrallySale {
-        height: 10%;
-        width: 50%;
-        /*background-color:green;*/
+    .myText {
+        float:left;
         display: inline-block;
-        padding-left: 3%;
+        width:67%;
+        /*background-color:red;*/
+        height:100%;    
     }
-
-    .myGrallyMark {
+    .myIcon{
+        margin-left:6%;
         display: inline-block;
-        height: 10%;
-        width: 50%;
-        /*background-color:aliceblue;*/
-        padding-left: 28%;
+        width:27%;
+        height:100%;
+    }
+    .myUp {
+        color:RGB(245,245,245);
+        margin-left:2.5%;
+        height: 50%;
     }
 
-    .myGrally hr {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    .myGrallyPrice {
-        display: inline-block;
-        width: 50%;
-        padding-top: 1%;
-        padding-left: 3%;
-        height: 10%;
-        font-size: 110%;
-    }
-
-        .myGrallyPrice input {
-            width: 40%;
-            height: 80%;
-            border-radius: 10%;
-            border: 1.5px solid gray;
-            text-align: center;
-        }
-
-    .myGrallyAmount {
-        height: 10%;
-        width: 50%;
-        display: inline-block;
-        text-align: center;
-    }
-
-        .myGrallyAmount button {
-            margin-top: 5%;
-            margin-right: 1%;
-            margin-left: 1%;
-            border-radius: 100%;
-            /*border:1px solid gray;*/
-            height: 70%;
-            width: 15%;
-            padding-left: 4%;
-        }
-
-            .myGrallyAmount button span {
-                font-size: 60%;
-                color: gray;
-                text-align: center;
-            }
-
-        .myGrallyAmount input {
-            width: 40%;
-            height: 80%;
-            border-radius: 10%;
-            border: 1.5px solid gray;
-            text-align: center;
-        }
-
-    .myGrallyStatus {
-        height: 10%;
-        width: 50%;
-        display: inline-block;
-        text-align: center;
-    }
-
-        .myGrallyStatus p {
-            display: inline-block;
-        }
-
-        .myGrallyStatus select {
-            border: 1px solid gray;
-        }
-
-    .myGrallySubmit {
-        width: 80%;
-        margin-left: 10%;
-        border: 1px solid gray;
-        border-radius: 10px;
+    .myDown {
+        color:RGB(245,245,245);
+        height: 50%;
     }
 
     .myInputDishInfo {
@@ -220,33 +104,37 @@
         width: 27%;
         height: 53%;
         background-color: white;
-        border-style:outset;
-        border-color:gray;
-        border-radius:10px;
+        border-style: outset;
+        border-color: gray;
+        border-radius: 10px;
     }
-    .myInputDishInfo input[type='submit']{
-        width:80%;
-        margin-top:3%;
-        margin-left:10%;
-        border-radius:5%;
-    }
-    .myClose{
-        margin-top:1%;
-        width:100%;
-        height:7%;
-    }
-    .myClose button{
-        border-style:none;
-        border-radius:50%;
-        width:7%;
-        height:100%;
-        margin-left:90%;
-        background-color:RGB(245,245,245);
-    }
-        .myInputDishInfo form {
-            /*margin-left: 10%;*/
-            /*margin-top: 10%;*/
+
+        .myInputDishInfo input[type='submit'] {
+            width: 80%;
+            margin-top: 3%;
+            margin-left: 10%;
+            border-radius: 5%;
         }
+
+    .myClose {
+        margin-top: 1%;
+        width: 100%;
+        height: 7%;
+    }
+
+        .myClose button {
+            border-style: none;
+            /*border-radius: 50%;*/
+            width: 8%;
+            height: 100%;
+            margin-left: 88%;
+            background-color: white;
+        }
+
+    .myInputDishInfo form {
+        /*margin-left: 10%;*/
+        /*margin-top: 10%;*/
+    }
 
     #InputPictID {
         float: left;
@@ -256,15 +144,17 @@
         margin-top: 4%;
         margin-left: 5%;
     }
-    #InputPictID button{
-        width:100%;
-        height:100%;
-        border-style:double;
-    }
-    #InputImgID{
-        width:100%;
-        height:100%;
-        display:none;
+
+        #InputPictID button {
+            width: 100%;
+            height: 100%;
+            border-style: double;
+        }
+
+    #InputImgID {
+        width: 100%;
+        height: 100%;
+        display: none;
     }
 
     #InputSelectID {
@@ -275,14 +165,16 @@
         margin-left: 5%;
         /*background-color: green;*/
     }
-    #InputSelectID select{
-        margin-top:10%;
-        width:50%;
-    }
+
+        #InputSelectID select {
+            margin-top: 10%;
+            width: 50%;
+        }
+
     #InputNaAndPrID {
         margin-left: 10%;
         margin-top: 2%;
-        width:80%;
+        width: 80%;
     }
 
         #InputNaAndPrID input {
@@ -313,6 +205,18 @@
     setCookie("InsertPictAdd","111",0.1);
     setCookie("InsertFlag","false",0.1);
     $(document).ready(function(){
+        var mySort = getCookie("mySort");
+        if(mySort!=""){
+            var mySortID;
+            switch (mySort) {
+                case "锅底": mySortID = "guoID"; break;
+                case "素菜": mySortID = "suID"; break;
+                case "荤菜": mySortID = "hunID"; break;
+                case "酒水": mySortID = "jiuID"; break;
+                default: break;
+            }
+            document.getElementById(mySortID).style = "color:#f16522;";
+        }
         ShowResult();
         //设成负数起到清除对于cookie的作用
         setCookie("myInput","",-1);
@@ -330,6 +234,32 @@
         setCookie("UpdateIndex", "", -0.1);
 
     })
+
+    function getMySelect() {
+        var myInput = document.getElementById("myInputID").value;
+        setCookie("myInput", myInput, 0.5);
+
+        if (myRole != "管理员") {
+            StoreDish();
+        }
+        window.open("/", "_parent");
+    }
+
+    function StoreDish() {
+        //将用户已选的菜品存入cookies中，以保证页面刷新之后，用户的选择还在
+        //在跳入到已选菜单之后，开发人员也能从cookies中读取相关数据，而无需再从数据库中读取
+        for (var i = 0; i < myLen; i++) {
+            var myDishID = mySearchResult[i][0];
+            var myAmount = document.getElementById("myFrameID" + i).getAttribute("value");
+            //判断myDishID是否加入已选菜单中
+            var myTem = getCookie(myDishID);
+           
+            if (myTem == '') {
+                setCookiesArray("Dishes", myDishID);
+            }
+            setCookie(myDishID, myAmount, 0.1);
+        }
+    }
 
     function Log_In(){
         document.getElementById("myShadeID").style="display:block";
@@ -366,7 +296,7 @@
         //以下为生成菜品ID
         var date=new Date();
         var myDishID=date.getTime();
-        
+
         setCookie("InsertFlag","true",0.1);
         if(myDishName=="" || myDishPrice==""){
             window.alert("请输入完整信息");
@@ -399,16 +329,27 @@
     function SortSale(){
         mySearchResult.sort(CompareSale(6));
         document.getElementById("myPictureID").innerHTML="";
+        document.getElementById("ordertextID").style="color:black;";
+        document.getElementById("ordersaleID").style="color:#f16522;";
+        document.getElementById("orderpriceID").style="color:black;";
+
         ShowResult();
     }
     function SortComment(){
         mySearchResult.sort(CompareSale(7));
+        document.getElementById("ordertextID").style="color:#f16522;";
+        document.getElementById("ordersaleID").style="color:black;";
+        document.getElementById("orderpriceID").style="color:black;";
+
         document.getElementById("myPictureID").innerHTML="";
         ShowResult();
     }
     function SortPrice(){
         mySearchResult.sort(CompareSale(2));
         document.getElementById("myPictureID").innerHTML="";
+        document.getElementById("ordertextID").style="color:black;";
+        document.getElementById("ordersaleID").style="color:black;";
+        document.getElementById("orderpriceID").style="color:#f16522;";
         ShowResult();
     }
 
@@ -431,56 +372,95 @@
         <span class="glyphicon glyphicon-list"></span>
         <span>食材分类</span>
         <ul>
-            <li><button onclick="UpType('锅底')">锅底</button></li>
-            <li><button onclick="UpType('荤菜')">荤菜</button></li>
-            <li><button onclick="UpType('素菜')">素菜</button></li>
-            <li><button onclick="UpType('酒水')">酒水</button></li>
+            <li><span class="glyphicon glyphicon-stop" id="guoID"></span><button onclick="UpType('锅底')">锅底</button></li>
+            <li><span class="glyphicon glyphicon-stop" id="hunID"></span><button onclick="UpType('荤菜')">荤菜</button></li>
+            <li><span class="glyphicon glyphicon-stop" id="suID"></span><button onclick="UpType('素菜')">素菜</button></li>
+            <li><span class="glyphicon glyphicon-stop" id="jiuID"></span><button onclick="UpType('酒水')">酒水</button></li>
         </ul>
     </div>
     <!-- 新品和销量tag -->
     <div class="myorder">
         <ul>
-            <li style="margin-left:1%;"><button onclick="SortComment()">评分</button></li>
-            <li><button onclick="SortSale()">销量</button></li>
-            <li><button onclick="SortPrice()">价格</button></li>
+            <li style="margin-left:1%;">
+                <button onclick="SortComment()">
+                    <div class="myText" id="ordertextID">
+                        <p>评分<p>
+                    </div>
+                    <div class="myIcon">
+                        <div class="myUp">
+                            <span class="glyphicon glyphicon-chevron-up myUp"></span>
+                        </div>
+                        <div class="myDown">
+                            <span class="glyphicon glyphicon-chevron-down myDown"></span>
+                        </div>
+                    </div>
+                </button>
+            </li>
+            <li><button onclick="SortSale()">
+                    <div class="myText" id="ordersaleID">
+                        <p>销量<p>
+                    </div>
+                    <div class="myIcon">
+                        <div class="myUp">
+                            <span class="glyphicon glyphicon-chevron-up myUp"></span>
+                        </div>
+                        <div class="myDown">
+                            <span class="glyphicon glyphicon-chevron-down myDown"></span>
+                        </div>
+                    </div>
+                </button></li>
+            <li><button onclick="SortPrice()">
+                    <div class="myText" id="orderpriceID">
+                        <p>价格<p>
+                    </div>
+                    <div class="myIcon">
+                        <div class="myUp">
+                            <span class="glyphicon glyphicon-chevron-up myUp"></span>
+                        </div>
+                        <div class="myDown">
+                            <span class="glyphicon glyphicon-chevron-down myDown"></span>
+                        </div>
+                    </div>
+                </button></li>
         </ul>
     </div>
+    <div style="clear:both"></div>
     <!-- 图片画廊 -->
     <div class="myPicture_gallery" id="myPictureID">
     </div>
     <div style="clear:both"></div>
     <!-- 用于填写菜品信息的临时框 -->
     <div class="myInputDishInfo" id="myInputDishID">
-            <div class="myClose">
-                <button onclick="CloseFrame()">X</button>
-            </div>
-            <div id="InputPictID">
-                <input type="file" id="myImageAddID" style="display:none" />
-                <button id="ButtonPictID" onclick="UpPict()">上传照片</button>
-                <img id="InputImgID" src="111"/>
-            </div>
+        <div class="myClose">
+            <button onclick="CloseFrame(1)"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+        <div id="InputPictID">
+            <input type="file" id="myImageAddID" style="display:none" />
+            <button id="ButtonPictID" onclick="UpPict()">上传照片</button>
+            <img id="InputImgID" src="111" />
+        </div>
         <form>
             <div id="InputSelectID">
                 <label for="InputStatusID">供应状态</label>
                 <select id="InputStatusID">
-                    <option value="供应"/>供应
-                    <option value="不供应"/>不供应
+                    <option value="供应" />供应
+                    <option value="不供应" />不供应
                 </select>
                 <label for="InputTypeID">菜&ensp;&ensp;&ensp;&ensp;类</label>
                 <select id="InputTypeID">
-                    <option value="锅底"/>锅底
-                    <option value="荤菜"/>荤菜
-                    <option value="素菜"/>素菜
-                    <option value="酒水"/>酒水
+                    <option value="锅底" />锅底
+                    <option value="荤菜" />荤菜
+                    <option value="素菜" />素菜
+                    <option value="酒水" />酒水
                 </select>
             </div>
             <div id="InputNaAndPrID">
                 <label for="myDishNameID">菜品名字</label>
                 <input type="text" id="myDishNameID" />
                 <label for="myDishPriceID">价格</label>
-                <input type="number" id="myDishPriceID"/>
+                <input type="number" id="myDishPriceID" />
             </div>
-            <input type="submit" value="提交" onclick="InsertInfo()"/>
+            <input type="submit" value="提交" onclick="InsertInfo()" />
         </form>
     </div>
     <div style="clear:both;"></div>
@@ -491,6 +471,9 @@
     <!-- 登录界面 -->
     <div class="login_posi" id="loginID">
         <!--post是数据库访问的方法-->
+        <div class="myClose">
+            <button onclick="CloseFrame(2)"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
         <form onsubmit="checkpassword()">
             <label for="usernameID"></label>
             <input type="text" id="usernameID" class="input_style" name="username" placeholder="用户名" />

@@ -32,6 +32,7 @@ def common():
         row = cursor.fetchall()
     else:
         row=''
+
     if(mySort !=None):
         cursor.execute("select 菜品ID from 菜类 where 类名='"+mySort+"';")
         myDishSet=cursor.fetchall()
@@ -61,6 +62,7 @@ def home():
             myRow+=tuple(cursor.fetchall())
         row=myRow
     length=len(row)
+
     if request.method=="POST":
         myDishID=request.cookies.get("UpdateDishID")
         myIndex=request.cookies.get("UpdateIndex")
