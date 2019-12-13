@@ -48,6 +48,7 @@
     <Content Include="Hot_Pot\static\scripts\login.js" />
     <Content Include="Hot_Pot\static\scripts\myCookies.js" />
     <Content Include="Hot_Pot\static\scripts\myDish.js" />
+    <Content Include="Hot_Pot\templates\order_confirm.html" />
     <Content Include="Hot_Pot\templates\order_handing.html" />
     <Content Include="Hot_Pot\templates\signin.html" />
     <Content Include="requirements.txt" />

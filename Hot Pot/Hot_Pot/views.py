@@ -166,3 +166,28 @@ def order_hand():
         year=datetime.now().year,
     )
 
+@app.route('/order_confirm/', methods=['GET', 'POST'])
+@app.route('/order_confirm/<dishid>', methods=['GET', 'POST'])
+def order_confirm(dishid=''):
+    cursor.execute("select * from view_orderform where 状态='待处理'")
+    row=cursor.fetchall()
+    length=len(row)
+    mySuborder=""
+    #用于判断是否要显示订单的详细信息
+    myShow="false"
+    myTest=request.args['dishid']
+    if(myTest!='0'):
+        print(myTest)
+        cursor.execute("select * from 订单子表 where 订单号='"+myTest+"'")
+        mySuborder=cursor.fetchall()
+        myShow="true"
+    return render_template(
+        'order_confirm.html',
+        title='订单处理',
+        mySearchResult=row,
+        myLen=length,
+        mySuborder=mySuborder,
+        myShow=myShow,
+        year=datetime.now().year,
+    )
+
