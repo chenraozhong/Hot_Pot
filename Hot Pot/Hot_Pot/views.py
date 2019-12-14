@@ -86,7 +86,6 @@ def home(form='dish'):
             cursor.execute(myStr)
             cursor.execute("insert into 菜单动态表 values('"+inDishID+"',0,0,0);")
             myStr="insert into 菜类 values ('"+inDishID+"','"+inDishType+"');"
-            print(myStr)
             cursor.execute("insert into 菜类 values ('"+inDishID+"','"+inDishType+"');")
             db.commit()
     if(form=='login'):
@@ -101,26 +100,6 @@ def home(form='dish'):
         row=row,len=length,
         MYUserMessage=MYUserMessage,
         type=myType
-    )
-
-@app.route('/contact')
-def contact():
-    """Renders the contact page."""
-    return render_template(
-        'contact.html',
-        title='Contact',
-        year=datetime.now().year,
-        message='Your contact page.'
-    )
-
-@app.route('/about')
-def about():
-    """Renders the about page."""
-    return render_template(
-        'about.html',
-        title='About',
-        year=datetime.now().year,
-        message='Your application description page.'
     )
 
 @app.route('/signin',methods=['POST','GET'])
@@ -148,6 +127,35 @@ def SigninSuccess():
 #########################################################
 @app.route('/order_hand', methods=['GET', 'POST'])
 def order_hand():
+    #以下为判断是否有订单提交
+    mySubmit=request.cookies.get("SubmitFlag")
+    if(mySubmit=='false'):
+        myDishID=request.cookies.get("orderdishesid")
+        myDishName=request.cookies.get("orderdishesname")
+        myPrice=request.cookies.get("orderprice");
+        myDelieve=request.cookies.get("orderdelieve")
+        myAddress=request.cookies.get("orderaddress")
+        myGrade=request.cookies.get("ordergrade")
+        myOverhead=request.cookies.get("orderoverhead")
+        myOriPrice=request.cookies.get("OriPrice")
+        myRealPrice=request.cookies.get("RealPrice")
+        myUserID=request.cookies.get("ID")
+        myOrderID=request.cookies.get("OrderID")
+        #将订单信息插入到订单总表(正确)
+        myStr="insert into 订单总表 values('"+myUserID+"','"+myOrderID+"','"+myAddress+"','"+myOriPrice+"','"+myRealPrice+"','"+myDelieve+"','待处理','"+myOverhead+"','"+myGrade+"')"
+        cursor.execute(myStr)
+        myDishID=myDishID.split('_')
+        myPrice=myPrice.split('_')
+        myDishName=myDishName.split('_')
+        for i in range(len(myDishID)):
+            if(myDishID[i]!=''):
+                myStr="insert into 订单子表 values('"+myOrderID+"','"+myUserID+"','"+myDishID[i]+"','"+myDishName[i]+"',"+request.cookies.get(myDishID[i])+","+myPrice[i]+",'')"
+                cursor.execute(myStr)
+        myValue=int(myOriPrice)-int(myGrade)
+        myStr="update 用户 set 积分+="+str(myValue)+" where 用户ID='"+myUserID+"'"
+        cursor.execute(myStr)
+        db.commit()
+
     myDish=request.cookies.get("Dishes")
     row=()
     if(myDish!=None):
@@ -156,15 +164,22 @@ def order_hand():
             if(myItem!=''):
                 cursor.execute("select * from 菜单静态表 where 菜品ID='"+myItem+"'")
                 row+=tuple(cursor.fetchall())
-    
+    user=request.cookies.get("ID")
+    address=""
+    if(user!=None):
+        cursor.execute("select * from 地址 where 用户ID='"+user+"'")
+        address=cursor.fetchall()
     length=len(row)
     return render_template(
         'order_handing.html',
         title='已选订单',
         mySearchResult=row,
         len=length,
+        myAddress=address,
         year=datetime.now().year,
     )
+
+
 
 @app.route('/order_confirm/', methods=['GET', 'POST'])
 @app.route('/order_confirm/<dishid>', methods=['GET', 'POST'])
@@ -177,7 +192,6 @@ def order_confirm(dishid=''):
     myShow="false"
     myTest=request.args['dishid']
     if(myTest!='0'):
-        print(myTest)
         cursor.execute("select * from 订单子表 where 订单号='"+myTest+"'")
         mySuborder=cursor.fetchall()
         myShow="true"

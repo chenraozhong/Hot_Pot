@@ -1,98 +1,150 @@
 ﻿{% extends "layout.html" %}
 {% block head %}
 {{super()}}
-<script type="text/javascript" src="../static/scripts/myDish.js"></script>
-<script type="text/javascript" src="../static/scripts/login.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/static/content/myLogin.css" />
-<link rel="stylesheet" type="text/css" href="/static/content/mySearch.css" />
-<link rel="stylesheet" type="text/css" href="/static/content/myGrally.css" />
+<script type="text/javascript" src="../static/scripts/myHand.js"></script>
 
+
+<link rel="stylesheet" type="text/css" href="/static/content/myDetail.css" />
 
 <style>
     .OrderDiv {
-        width: 55%;
+        width: 50%;
         background-color: RGB(245,245,245);
-        margin-left: 22.5%;
+        margin-left: 25%;
     }
 
     .SuborderDiv {
         width: 100%;
         height: 40%;
-        border:1px solid gray;
+        border: 1px solid gray;
         margin-top: 2%;
     }
 
-    .myOrderPicture{
-        display:inline-block;
-        width:40%;
-        height:100%;
-        background-size:100% 100%;
-        float:left;
+    .myOrderPicture {
+        display: inline-block;
+        width: 40%;
+        height: 100%;
+        background-size: 100% 100%;
+        float: left;
     }
-    .myOrderDishname{
-        display:inline-block;
-        width:60%;
-        height:20%;
+
+    .myOrderDishname {
+        display: inline-block;
+        width: 60%;
+        height: 20%;
         /*background-color:red;*/
     }
-    .myOrderDishname p{
-        margin-left:7%;
-        margin-top:1%;
-        font-size:150%;
-    }
-    .myOrderPandADiv{
-        width:60%;
-        height:20%;
-        margin-top:17%;
-        display:inline-block;
+
+        .myOrderDishname p {
+            margin-left: 7%;
+            margin-top: 1%;
+            font-size: 150%;
+        }
+
+    .myOrderPandADiv {
+        width: 60%;
+        height: 20%;
+        margin-top: 17%;
+        display: inline-block;
         /*background-color:coral;*/
     }
 
-    .myOrderPrice{
-        display:inline-block;
-        float:left;
-        font-size:150%;
-        width:50%;
-        height:100%;
+    .myOrderPrice {
+        display: inline-block;
+        float: left;
+        font-size: 150%;
+        width: 50%;
+        height: 100%;
         /*background-color:yellow;*/
     }
-    .myOrderPrice p{
-        margin-left:3%;
-    }
-    .myOrderAmount{
-        display:inline-block;
-        width:50%;
-        height:100%;
+
+        .myOrderPrice p {
+            margin-left: 3%;
+        }
+
+    .myOrderAmount {
+        display: inline-block;
+        width: 50%;
+        height: 100%;
         /*background-color:blue;*/
     }
-    .myOrderAmount button {
-        margin-top: 5%;
-        margin-right: 1%;
-        margin-left: 2%;
-        border-radius: 100%;
-        height: 70%;
-        width: 15%;
-        padding-left: 4%;
-    }
 
-        .myOrderAmount button span {
-            font-size: 60%;
-            color: gray;
+        .myOrderAmount button {
+            margin-top: 5%;
+            margin-right: 1%;
+            margin-left: 2%;
+            border-radius: 100%;
+            height: 70%;
+            width: 15%;
+            padding-left: 4%;
+        }
+
+            .myOrderAmount button span {
+                font-size: 60%;
+                color: gray;
+                text-align: center;
+            }
+
+        .myOrderAmount input {
+            width: 40%;
+            height: 80%;
+            border-radius: 10px;
+            border: 1.5px solid gray;
             text-align: center;
         }
 
-    .myOrderAmount input{
-        width: 40%;
-        height: 80%;
-        border-radius: 10px;
-        border: 1.5px solid gray;
-        text-align: center;
+    .RMB {
+        font-size: 70%;
+        color: rgb(255, 172, 0);
     }
-    .RMB{
-        font-size:70%;
-        color:rgb(255, 172, 0);
+
+    .DragMouse {
+        position: absolute;
+        top: 16%;
+        left: 85%;
+        width: 8%;
+        height: 6%;
+        border-radius:10px;
     }
+    #DragButtonID{
+        width:100%;
+        height:100%;
+        border-radius:10px;
+        background-color:white;
+    }
+    .myDetailOther{
+        /*display:inline-block;*/
+        width:100%;
+        /*background-color:blue;*/
+        height:10%;
+    }
+    .myDetailOther label{
+        margin-left:10%;
+        margin-top:1%;
+    }
+    .myDetailOther select{
+        min-width:60%;
+        text-align:center;
+        border:1px solid gray;
+        border-radius:10px;
+    }
+    .myDetailOther textarea{
+        width:60%;
+        min-height:50px;
+    }
+    #HelpID{
+        font-size:100%;
+        color:cornflowerblue;
+        border-radius:50%;
+        height:20px;
+        width:20px;
+        padding:0;
+        border:none;
+        background-color:white;
+    }
+    
+    
 </style>
 
 <script>
@@ -100,91 +152,19 @@
     myDishes = myDishes.split("_");
     var mySearchResult = {{mySearchResult|tojson}};
     var myLen={{len|tojson}}
+    var myAddress={{myAddress|tojson}};
     $(document).ready(function () {
-        var myOrderDiv = document.getElementById("OrderID");
-        for (var i = 0; i < mySearchResult.length; i++) {
-            var mySubDiv = document.createElement("div");
-            mySubDiv.setAttribute("class", "SuborderDiv");
-
-            var myPictureDiv = document.createElement("div");
-            myPictureDiv.setAttribute("class", "myOrderPicture");
-            var myImageAddress = mySearchResult[i][3].toString();
-            var myStr = '"';
-            /*
-            由于不知道如何用正则进行\替换成/所以采用如下这个办法
-            */
-            for (var j = 0; j < myImageAddress.length; j++) {
-                if (myImageAddress[j] == "\\") {
-                    myStr += '/';
-                }
-                else {
-                    myStr += myImageAddress[j];
-                }
-            }
-            myStr += '"';
-            myPictureDiv.style.backgroundImage = "url(" + myStr + ")";
-            //菜品名字显示
-            var myDishnameDiv = document.createElement("div");
-            myDishnameDiv.setAttribute("class", "myOrderDishname");
-            myDishnameDiv.innerHTML = "<p>" + mySearchResult[i][1] + "</p>";
-            //菜品价格和数量框
-            var myPandADiv=document.createElement("div");
-            myPandADiv.setAttribute("class","myOrderPandADiv");
-
-            //菜品价格显示
-            var myPriceDiv = document.createElement("div");
-            myPriceDiv.setAttribute("class", "myOrderPrice");
-            myPriceDiv.innerHTML = "<p><span class='RMB'>￥</span>" + mySearchResult[i][2] + "</p>";
-            //数量选择框
-            var myAmountDiv = document.createElement("div");
-            var mySubButton = document.createElement("button");
-            var myAddButton = document.createElement("button");
-            var myShowFrame = document.createElement("input");
-            if (getCookie(mySearchResult[i][0]) != '' && getCookie("ID") != '') {
-                myShowFrame.setAttribute("value", getCookie(mySearchResult[i][0]));
-            }
-            else {
-                myShowFrame.setAttribute("value", "0");
-            }
-            myShowFrame.setAttribute("id", "myFrameID" + i);
-            myShowFrame.setAttribute("disabled", "disabled");
-            myAddButton.setAttribute("onclick", "AddAmount(" + i + ")");
-            mySubButton.setAttribute("onclick", "SubAmount(" + i + ")");
-
-            myAmountDiv.setAttribute("class", "myOrderAmount");
-            myAmountDiv.appendChild(mySubButton);
-            mySubButton.innerHTML = "<span class=\"glyphicon glyphicon-minus\"></span>";
-            myAmountDiv.appendChild(myShowFrame);
-            myAddButton.innerHTML = "<span class=\"glyphicon glyphicon-plus\"></span>";
-            myAmountDiv.appendChild(myAddButton);
-
-            myPandADiv.appendChild(myPriceDiv);
-            myPandADiv.appendChild(myAmountDiv);
-            mySubDiv.appendChild(myPictureDiv);
-            mySubDiv.appendChild(myDishnameDiv);
-            mySubDiv.appendChild(myPandADiv);
-
-            myOrderDiv.appendChild(mySubDiv);
+        CheckoutLogin();
+        if(getCookie("SubmitFlag")=='true'){
+            alert("订单已提交，请前往历史订单查看状态。若想重新下单，请重新登录");
+            window.open("/","_parent");
         }
+        ShowOrder();
     })
-
-    function AddAmount(index) {
-        var myShowFrame = document.getElementById("myFrameID" + index);
-        var myValue = myShowFrame.getAttribute("value");
-        myValue++;
-        myShowFrame.setAttribute("value", myValue);
+    
+    function ShowHelp(){
+        alert("积分抵用规则:\n1、每100积分可抵用一元;\n2、抵用金额不可超过原价的50%");
     }
-
-    function SubAmount(index) {
-        var myShowFrame = document.getElementById("myFrameID" + index);
-        var myValue = myShowFrame.getAttribute("value");
-        if (myValue != '0') {
-            myValue--;
-        }
-        myShowFrame.setAttribute("value", myValue);
-    }
-
-
 
 </script>
 
@@ -192,6 +172,62 @@
 
 {% block content %}
 <div class="OrderDiv" id="OrderID" style="min-height:500px;">
+
+</div>
+<!-- 拖拽鼠标的实现 -->
+<div class="DragMouse" id="DragMouseID">
+    <button id="DragButtonID" onclick="ShowFrame()">
+        提交订单
+    </button>
+</div>
+
+<!-- 用于显示订单详细信息 -->
+<div class="myDishDetail" id="myDishDetailID">
+    <div class="myClose">
+        <button onclick="CloseFrame( )"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+    <hr style="border:dotted">
+    <div class="myDetailHR">
+        <hr style="border:double">
+    </div>
+    <ul id="myDishInfoID"></ul>
+    <div class="myDetailHR">
+        <hr style="border:double" id="HrElse">
+    </div>
+    <!-- 订单详情中的其他内容 -->
+    <div class="myDetailOther">
+        <label for="DistributionID">配送方式:</label>
+        <select id="DistributionID">
+            <option value="堂食">堂食</option>
+            <option value="外卖">外卖</option>
+        </select>
+        <br/>
+        <label for="AddressID">地&ensp;&ensp;&ensp;&ensp;址:</label>
+        <select id="AddressID">
+            
+        </select>
+        <br/>
+        <label for="GradeID">积分抵用:</label>
+        <select id="GradeID">
+
+        </select>
+        <!-- 积分抵用帮助按钮 -->
+        <button class="glyphicon glyphicon-question-sign" id="HelpID" onclick="ShowHelp()"></button>
+        <br/>
+        <label for="OverheadID">附加信息:</label>
+        <textarea id="OverheadID"></textarea>
+
+    </div>
+    <hr style="border:dotted">
+    <ul class="myCostul" id="myCostulID">
+       
+    </ul>
+    <button class="myConfirmButton" onclick="UploadOrder()">
+        确认订单
+    </button>
+</div>
+
+<div class="myShade" id="myShadeID">
 
 </div>
 

@@ -41,6 +41,7 @@
     <Folder Include="Hot_Pot\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Hot_Pot\static\content\myDetail.css" />
     <Content Include="Hot_Pot\static\content\myGrally.css" />
     <Content Include="Hot_Pot\static\content\myLogin.css" />
     <Content Include="Hot_Pot\static\content\mySearch.css" />
@@ -48,6 +49,7 @@
     <Content Include="Hot_Pot\static\scripts\login.js" />
     <Content Include="Hot_Pot\static\scripts\myCookies.js" />
     <Content Include="Hot_Pot\static\scripts\myDish.js" />
+    <Content Include="Hot_Pot\static\scripts\myHand.js" />
     <Content Include="Hot_Pot\templates\order_confirm.html" />
     <Content Include="Hot_Pot\templates\order_handing.html" />
     <Content Include="Hot_Pot\templates\signin.html" />

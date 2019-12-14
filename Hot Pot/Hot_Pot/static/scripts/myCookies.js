@@ -60,3 +60,10 @@ function StoreDish() {
         setCookie(myDishID, myAmount, 0.1);
     }
 }
+function CheckoutLogin() {
+    var user = getCookie("username");
+    if (user == "") {
+        alert("请先登录");
+        window.open("/", "_parent");
+    }
+}
