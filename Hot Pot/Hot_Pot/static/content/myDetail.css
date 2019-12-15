@@ -78,6 +78,9 @@
    #HrElse::after{
        content:"其它";
    }
+   #HrOrderID::after{
+       content:attr(data-text);
+   }
    .myCostul{
        width:100%;
        /*background-color:blue;*/

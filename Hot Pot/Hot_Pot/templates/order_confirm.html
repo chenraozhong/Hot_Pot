@@ -55,6 +55,9 @@
         height:80%;
         /*background-color:blue;*/
     }
+    #myDetailElseInfoID{
+        margin-left:10%;
+    }
    
 </style>
 
@@ -71,25 +74,12 @@
             myCDiv.setAttribute("class","mySubConfirm");
             var myUL=document.createElement("ul");
             myUL.setAttribute("class","myConfirmul");
-            var myDic=new Array("订 单 ID:","用 户 名:","地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:","配送方式:","附加信息:");
-            var myNum=new Array(1,9,2,4,6);
-            var myStr="";
-            if(mySearchResult[i][4]=='是'){
-                myStr="外卖";
-            }
-            else{
-                myStr="堂食";
-            }
+            var myDic=new Array("订&nbsp;单&nbsp;ID:&nbsp; ","用&nbsp;户&nbsp;名:&nbsp; ","联系方式:","地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址: ","配送方式: ","附加信息: ");
+            var myNum=new Array(1,8,9,2,3,5);
             var myLI=document.createElement("li");
-            for(var j=0;j<5;j++){
+            for(var j=0;j<6;j++){
                 myLI=document.createElement("li");
-                if(j!=3){
                     myLI.innerHTML=myDic[j]+mySearchResult[i][myNum[j]];
-                }
-                else{
-                    myLI.innerHTML=myDic[j]+myStr;
-                }
-
                 myUL.appendChild(myLI);
             }
             var myFill=document.createElement("div");
@@ -101,6 +91,7 @@
             myButton.setAttribute("onclick","UploadingDishID("+i+")");
             myConfirmDiv.appendChild(myButton);
             myButton=document.createElement("button");
+            myButton.setAttribute("onclick","ConfirmDish("+i+")");
             myButton.innerHTML="确认订单";
             myConfirmDiv.appendChild(myButton);
 
@@ -115,7 +106,11 @@
     })
 
     function UploadingDishID(i){
+        setCookie("detailindex",i,0.1);
         window.open("/order_confirm?dishid="+mySearchResult[i][1],"_parent");
+    }
+    function ConfirmDish(i){
+        window.open("/order_confirm?dishid=1"+mySearchResult[i][1],"_parent");
     }
 
     function ShowFrame(){
@@ -140,17 +135,46 @@
             }
             myDetailUL.appendChild(myLi);
         }
+        //用于显示订单详情中的其他信息
+        var myUL=document.getElementById("myDetailElseInfoID");
+        var myDic=new Array("用&nbsp;户&nbsp;名:&nbsp; ","联系方式:","地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址: ","配送方式: ","附加信息: ");
+        var myNum=new Array(8,9,2,3,5);
+        var myLI=document.createElement("li");
+        var i=getCookie("detailindex");
+        for(var j=0;j<5;j++){
+            myLI=document.createElement("li");
+            myLI.innerHTML=myDic[j]+mySearchResult[i][myNum[j]];
+            myUL.appendChild(myLI);
+        }
+        var myHr=document.getElementById("HrOrderID");
+        myHr.setAttribute("data-text",mySearchResult[i][1]);
+
+        //以下用于填充原价信息和实付信息
+        var myUL = document.getElementById("myCostulID");
+        myUL.innerHTML = "";
+        var myLi = document.createElement("li");
+        myLi.innerHTML = "原价:" + mySearchResult[i][6];
+        myUL.appendChild(myLi);
+        myLi = document.createElement("li");
+        myLi.innerHTML = "实付:<span style=\"font-size:150%\">" + mySearchResult[i][7] + "</span>";
+        myUL.appendChild(myLi);
+
+        //设置确认按钮动作
+        var myButton=document.getElementById("myDetailConfirmButtonID");
+        myButton.setAttribute("onclick","ConfirmDish("+i+")");
     }
     function CloseFrame(){
         document.getElementById("myDishDetailID").setAttribute("style","display:none");
         document.getElementById("myShadeID").setAttribute("style","display:none");
     }
+
 </script>
 
 {% endblock %}
 
 {% block content %}
 <div class="myConfirm"  id="myConfirmID">
+    <!-- 以下在完成后可以去掉 -->
     <div class="mySubConfirm" style="display:none">
         <ul class="myConfirmul">
             <li>订 单 ID: </li>
@@ -176,9 +200,11 @@
     <div class="myClose">
         <button onclick="CloseFrame( )"><span class="glyphicon glyphicon-remove"></span></button>
     </div>
-    <hr style="border:dotted">
     <div class="myDetailHR">
-    <hr style="border:double">
+        <hr style="border:dotted" id="HrOrderID">
+    </div>
+    <div class="myDetailHR">
+         <hr style="border:double">
     </div>
     <ul id="myDishInfoID">
        
@@ -186,12 +212,15 @@
     <div class="myDetailHR">
         <hr style="border:double" id="HrElse">
     </div>
+    <ul id="myDetailElseInfoID">
+
+    </ul>
+
     <hr style="border:dotted">
     <ul class="myCostul" id="myCostulID">
-        <li>原价:</li>
-        <li>实付:</li>
+        
     </ul>
-     <button class="myConfirmButton">
+     <button class="myConfirmButton" id="myDetailConfirmButtonID">
          确认订单
      </button>
 </div>

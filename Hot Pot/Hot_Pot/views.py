@@ -184,17 +184,22 @@ def order_hand():
 @app.route('/order_confirm/', methods=['GET', 'POST'])
 @app.route('/order_confirm/<dishid>', methods=['GET', 'POST'])
 def order_confirm(dishid=''):
+   
+    #用于判断是否要显示订单的详细信息
+    myShow="false"
+    myTest=request.args['dishid']
+    if(myTest[0]!='0' and myTest[0]!='1'):
+        cursor.execute("select * from 订单子表 where 订单号='"+myTest+"'")
+        mySuborder=cursor.fetchall()
+        myShow="true"
+    if(myTest[0]=='1'):
+        cursor.execute("update view_orderform set 状态='已处理' where 订单号='"+myTest[1:len(myTest)]+"'")
+        db.commit()
+    #查询待处理订单
     cursor.execute("select * from view_orderform where 状态='待处理'")
     row=cursor.fetchall()
     length=len(row)
     mySuborder=""
-    #用于判断是否要显示订单的详细信息
-    myShow="false"
-    myTest=request.args['dishid']
-    if(myTest!='0'):
-        cursor.execute("select * from 订单子表 where 订单号='"+myTest+"'")
-        mySuborder=cursor.fetchall()
-        myShow="true"
     return render_template(
         'order_confirm.html',
         title='订单处理',
