@@ -1,0 +1,271 @@
+﻿{% extends "layout.html" %}
+{% block head %}
+{{super()}}
+<!--加样式和动作-->
+<style>
+    .myDropDiv{
+        
+    }
+    .myPageStyleCls {
+        position: relative;
+        background-color: white;
+        top: 10%;
+        width: 40%;
+        height:40%;
+        left: 30%;
+        margin-top:1%;
+    }
+
+    .myDingMessCls {
+        position: absolute;
+        background-color: white;
+        width: 50%;
+        height: 100%;
+    }
+
+    .myPeiAndDishMessCls {
+        position: absolute;
+        background-color: white;
+        left: 50%;
+        width: 50%;
+        height: 100%;
+    }
+
+    .myPeiMesCls {
+        position: absolute;
+        background-color: white;
+        height: 100%;
+        width: 100%;
+    }
+
+    .myDisInfo {
+        display: none;
+        position: fixed;
+        opacity: 1;
+        z-index: 10;
+        left: 35%;
+        top: 25%;
+        width: 30%;
+        background-color: white;
+        border-style: outset;
+        border-color: gray;
+        border-radius: 10px;
+    }
+    .myDishMesCls {
+        position: absolute;
+        background-color: white;
+        top: 70%;
+        height: 30%;
+        width: 100%;
+        font-size: l10%;
+        text-align: center;
+    }
+
+    .myDishOKCls {
+        margin-top: 5%;
+    }
+
+    .myShade {
+        display: none;
+        opacity: 0.7;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9;
+        background-color: black;
+    }
+
+    .mySubmitInfo {
+        width: 30%;
+        border-radius: 10px;
+        margin-top: 8%;
+        margin-left: 35%;
+        height: 10%;
+        display:none;
+    }
+
+    .myDingMessCls li {
+        margin-top: 5%;
+    }
+
+    .myPeiMesCls li {
+        margin-top: 3%;
+    }
+    #myScoreID{
+        position:relative;
+        margin-top:5%;
+        left:20%;
+    }
+    label{
+        font-size:large;
+        margin:5%:
+    }
+    select{
+        font-size:large;
+        width:20%;
+        height:10%;
+    }
+    .myTijiaoCls{
+        position:relative;
+        width: 30%;
+        border-radius: 10px;
+        margin-top: 4%;
+        margin-left: 35%;
+        height: 10%;
+    }
+</style>
+<script>
+    var myDish = {{myDish|tojson}};
+    var mySearchResult={{myDingPei|tojson}};
+    var myShow={{myShow|tojson}};
+    function ShowTemFrame(i) {
+        //点击加号后的临时添加框
+        if(mySearchResult[i][10]=='否'){
+            setCookie("ZhaoOrderID",mySearchResult[i][1],0.1);
+            setCookie("ZhaoShow","true",0.1);
+            window.open("/history_order","_parent");
+        }
+        else{
+            alert("该订单已经评过分，请勿重复评价");
+        }
+    }
+    function ShowMessageSubmit() {
+        for(var i=0;i<myDish.length;i++){
+            var mydish1 = document.getElementById("myScoreID"+i);
+            var index = mydish1.selectedIndex;
+            var myDishScore1 = mydish1.options[index].value;
+            if (myDishScore1 == "" || myDishScore1 == null) {
+                alert("请对菜品评价！");
+                return false;
+            }
+            else {
+                $("#mySubID").click();
+            }
+            setCookie("myScore"+i, myDishScore1, 0.1);
+        }
+    }
+    $(document).ready(function() {
+        CheckoutLogin();
+        //将显示标志置为无效
+        setCookie("ZhaoShow","false",0.1);
+        //用于显示评分信息
+        if(myDish!=''){
+            var myForm = document.getElementById("myFormID");
+            var myDiv=document.createElement("div");
+            var myLabel=document.createElement("label");
+            var mySelect=document.createElement("select");
+            for(var i=0;i<myDish.length;i++){
+                myDiv=document.createElement("div");
+                myLabel=document.createElement("label");
+                mySelect=document.createElement("select");
+                mySelect.setAttribute("id","myScoreID"+i);
+                myLabel.innerHTML=myDish[i][3];
+                var myOption;
+                for(var j=0;j<5;j++){
+                    myOption=document.createElement("option");
+                    myOption.setAttribute("value",j+1);
+                    myOption.innerHTML=j+1;
+                    mySelect.appendChild(myOption);
+                }
+                myDiv.appendChild(myLabel);
+                myDiv.appendChild(mySelect);
+                myForm.appendChild(myDiv);
+            }   
+        }//if(myDish!='')
+        //用于判断是否显示评分信息
+        if(myShow=='true'){
+            document.getElementById('myDisID').setAttribute('style', 'display:block');
+            document.getElementById("myShadeID").setAttribute("style", "display:block");
+        }
+        //用于显示历史订单信息
+        var myDropDiv=document.getElementById("myDropDivID");
+        var myPage;
+        var myDiv;
+        for(var i=0;i<mySearchResult.length;i++){
+            //第i个大块
+            myPage=document.createElement("div");
+            myPage.setAttribute("class","myPageStyleCls");
+            //第一个DIV
+            myDiv=document.createElement("div");
+            myDiv.setAttribute("class","myDingMessCls");
+            var myH4=document.createElement("h4");
+            myH4.innerHTML="订单信息";
+            var myUL=document.createElement("ul");
+            var myDic=new Array("订单号:","姓名:","联系方式;","价格:");
+            var myIndex=new Array(1,8,9,6);
+            var myLi;
+            for(var j=0;j<4;j++){
+                myLi=document.createElement("li");
+                myLi.innerHTML=myDic[j]+mySearchResult[i][myIndex[j]];
+                myUL.appendChild(myLi);
+            }
+            myDiv.appendChild(myH4);
+            myDiv.appendChild(myUL);
+            myPage.appendChild(myDiv);
+            //第二个DIV
+            //第一个子块
+            myDiv=document.createElement("div");
+            myDiv.setAttribute("class","myPeiAndDishMessCls");
+            var mySubDiv=document.createElement("div");
+            mySubDiv.setAttribute("class","myPeiMesCls")
+            myH4=document.createElement("h4");;
+            myH4.innerHTML="配送信息";
+            myUL=document.createElement("div");
+            myDic=new Array("配送方式:","地址：","附加信息:");
+            myIndex=new Array(3,2,5);
+            for(var j=0;j<3;j++){
+                myLi=document.createElement("li");
+                myLi.innerHTML=myDic[j]+mySearchResult[i][myIndex[j]];
+                myUL.appendChild(myLi);
+            }
+            mySubDiv.appendChild(myH4);
+            mySubDiv.appendChild(myUL);
+            myDiv.appendChild(mySubDiv);
+            //第二个子块
+            mySubDiv=document.createElement("div");
+            mySubDiv.setAttribute("class","myDishMesCls");
+            var myButton=document.createElement("button");
+            myButton.setAttribute("class","myDishOKCls");
+            myButton.setAttribute("onclick","ShowTemFrame("+i+")");
+            myButton.innerHTML="请查看菜单并评分";
+            mySubDiv.appendChild(myButton);
+            myDiv.appendChild(mySubDiv);
+            myPage.appendChild(myDiv);
+
+            myDropDiv.appendChild(myPage);
+        }//for
+    })
+    function CheckoutLogin() {
+        var user = getCookie("username");
+        if (user == "") {
+            alert("请先登录");
+            window.open("/", "_parent");
+        }
+    }
+
+</script>
+{% endblock %}
+
+{% block content %}
+<!--页面信息-->
+<div id="myDropDivID">
+<!--<div class="myPageStyleCls" id="myPageStyleID">
+    
+</div>-->
+</div>
+
+<!--添加地址隐藏窗口-->
+<div id="myDisID" class="myDisInfo">
+    <form id="myFormID">
+        <input type="submit" id="mySubID" class="mySubmitInfo"/>
+    </form>
+    <button  class="myTijiaoCls" onclick="ShowMessageSubmit()">提交</button>
+</div>
+<!-- 遮罩层 -->
+<div class="myShade" id="myShadeID">
+
+</div>
+
+{% endblock %}

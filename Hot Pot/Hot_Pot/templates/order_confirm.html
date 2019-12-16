@@ -1,0 +1,231 @@
+﻿{% extends "layout.html" %}
+{% block head %}
+{{super()}}
+<link rel="stylesheet" type="text/css" href="/static/content/myDetail.css" />
+
+
+<style>
+    .myConfirm{
+        width:55%;
+        height:100%;
+      
+        margin-left:22.5%;
+        margin-top:2%;
+    }
+    .mySubConfirm{
+        width:100%;
+        height:30%;
+        background-color:white;
+        border:1px solid gray;
+        border-radius:10px;
+        margin-top:1%;
+    }
+    .mySubConfirm ul{
+        list-style-type:none;
+        height:100%;
+        /*background-color:red;*/
+        width:65%;
+        float:left;
+        display:inline-block;
+    }
+    .mySubConfirm li{
+        margin-top:1%;
+    }
+    .myConfirmBar{
+        width:35%;
+        display:inline-block;
+        height:20%;
+        
+        /*background-color:yellow;*/    
+    }
+    .myConfirmBar button{
+        border-radius:10px;
+        margin-top:3%;
+        border:none;
+        margin-left:10%;
+        margin-right:6%;
+    }
+    .myConfirmBar button:hover{
+        background-color:#f16522;
+        color:white;
+    }
+    .myConfirmFill{
+        width:35%;
+        display:inline-block;
+        height:80%;
+        /*background-color:blue;*/
+    }
+    #myDetailElseInfoID{
+        margin-left:10%;
+    }
+   
+</style>
+
+<script>
+    var mySearchResult = {{mySearchResult|tojson}};
+    var myLen={{myLen|tojson}};
+    var mySuborder={{mySuborder|tojson}};//订单子表详细信息
+    var myShow={{myShow|tojson}};//判断是否显示详细框
+    $(document).ready(function(){
+        var myPDiv=document.getElementById("myConfirmID");
+        for(var i=0;i<myLen;i++){
+            //window.alert("cdfadf");
+            var myCDiv=document.createElement("div");
+            myCDiv.setAttribute("class","mySubConfirm");
+            var myUL=document.createElement("ul");
+            myUL.setAttribute("class","myConfirmul");
+            var myDic=new Array("订&nbsp;单&nbsp;ID:&nbsp; ","用&nbsp;户&nbsp;名:&nbsp; ","联系方式:","地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址: ","配送方式: ","附加信息: ");
+            var myNum=new Array(1,8,9,2,3,5);
+            var myLI=document.createElement("li");
+            for(var j=0;j<6;j++){
+                myLI=document.createElement("li");
+                    myLI.innerHTML=myDic[j]+mySearchResult[i][myNum[j]];
+                myUL.appendChild(myLI);
+            }
+            var myFill=document.createElement("div");
+            myFill.setAttribute("class","myConfirmFill");
+            var myConfirmDiv=document.createElement("div");
+            myConfirmDiv.setAttribute("class","myConfirmBar");
+            var myButton=document.createElement("button");
+            myButton.innerHTML="订单详情";
+            myButton.setAttribute("onclick","UploadingDishID("+i+")");
+            myConfirmDiv.appendChild(myButton);
+            myButton=document.createElement("button");
+            myButton.setAttribute("onclick","ConfirmDish("+i+")");
+            myButton.innerHTML="确认订单";
+            myConfirmDiv.appendChild(myButton);
+
+            myCDiv.appendChild(myUL);
+            myCDiv.appendChild(myFill);
+            myCDiv.appendChild(myConfirmDiv);
+            myPDiv.appendChild(myCDiv);
+        }
+        if(myShow=="true"){
+            ShowFrame();//用于显示订单详情
+        }
+    })
+
+    function UploadingDishID(i){
+        setCookie("detailindex",i,0.1);
+        window.open("/order_confirm?dishid="+mySearchResult[i][1],"_parent");
+    }
+    function ConfirmDish(i){
+        window.open("/order_confirm?dishid=1"+mySearchResult[i][1],"_parent");
+    }
+
+    function ShowFrame(){
+        document.getElementById("myShadeID").setAttribute("style","display:block");
+        var myDetailDiv=document.getElementById("myDishDetailID");
+        myDetailDiv.setAttribute("style","display:block");
+
+        var myDetailUL=document.getElementById("myDishInfoID");
+        var myAttri=new Array("DetailName","DetailAmount","DetailPrice");
+        for(var i=0;i<mySuborder.length;i++){
+            var myLi=document.createElement("li");
+            var myDiv;
+            for(var j=0;j<3;j++){
+                myDiv=document.createElement("div");
+                myDiv.setAttribute("class",myAttri[j]);
+                myDiv.innerHTML=mySuborder[i][3+j];
+                if(j==2){
+                    myDiv.innerHTML="￥"+parseInt(mySuborder[i][5]);
+                }
+                myLi.appendChild(myDiv);
+            }
+            myDetailUL.appendChild(myLi);
+        }
+        //用于显示订单详情中的其他信息
+        var myUL=document.getElementById("myDetailElseInfoID");
+        var myDic=new Array("用&nbsp;户&nbsp;名:&nbsp; ","联系方式:","地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址: ","配送方式: ","附加信息: ");
+        var myNum=new Array(8,9,2,3,5);
+        var myLI=document.createElement("li");
+        var i=getCookie("detailindex");
+        for(var j=0;j<5;j++){
+            myLI=document.createElement("li");
+            myLI.innerHTML=myDic[j]+mySearchResult[i][myNum[j]];
+            myUL.appendChild(myLI);
+        }
+        var myHr=document.getElementById("HrOrderID");
+        myHr.setAttribute("data-text",mySearchResult[i][1]);
+
+        //以下用于填充原价信息和实付信息
+        var myUL = document.getElementById("myCostulID");
+        myUL.innerHTML = "";
+        var myLi = document.createElement("li");
+        myLi.innerHTML = "原价:" + mySearchResult[i][7];
+        myUL.appendChild(myLi);
+        myLi = document.createElement("li");
+        myLi.innerHTML = "实付:<span style=\"font-size:150%\">" + mySearchResult[i][6] + "</span>";
+        myUL.appendChild(myLi);
+
+        //设置确认按钮动作
+        var myButton=document.getElementById("myDetailConfirmButtonID");
+        myButton.setAttribute("onclick","ConfirmDish("+i+")");
+    }
+    function CloseFrame(){
+        document.getElementById("myDishDetailID").setAttribute("style","display:none");
+        document.getElementById("myShadeID").setAttribute("style","display:none");
+    }
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+<div class="myConfirm"  id="myConfirmID">
+    <!-- 以下在完成后可以去掉 -->
+    <div class="mySubConfirm" style="display:none">
+        <ul class="myConfirmul">
+            <li>订 单 ID: </li>
+            <li>用 户 名:陈饶中</li>
+            <li>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:江西省上饶市玉山县冰溪镇京门路附135号</li>
+            <li>配送方式:堂食</li>
+            <li>附加信息:无</li>
+        </ul>
+        <div class="myConfirmFill">
+            <!-- 空的块，用于填充 -->
+        </div>
+        <div class="myConfirmBar">
+            <button>订单详情</button>
+            <button>确认订单</button>
+        </div>
+    </div>
+</div>
+<div style="clear:both">
+</div>
+
+<!-- 用于显示订单详细信息 -->
+<div class="myDishDetail" id="myDishDetailID">
+    <div class="myClose">
+        <button onclick="CloseFrame( )"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+    <div class="myDetailHR">
+        <hr style="border:dotted" id="HrOrderID">
+    </div>
+    <div class="myDetailHR">
+         <hr style="border:double">
+    </div>
+    <ul id="myDishInfoID">
+       
+    </ul>
+    <div class="myDetailHR">
+        <hr style="border:double" id="HrElse">
+    </div>
+    <ul id="myDetailElseInfoID">
+
+    </ul>
+
+    <hr style="border:dotted">
+    <ul class="myCostul" id="myCostulID">
+        
+    </ul>
+     <button class="myConfirmButton" id="myDetailConfirmButtonID">
+         确认订单
+     </button>
+</div>
+
+<div class="myShade" id="myShadeID">
+
+</div>
+
+{% endblock %}
