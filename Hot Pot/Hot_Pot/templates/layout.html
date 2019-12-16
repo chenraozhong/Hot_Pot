@@ -164,6 +164,8 @@
             setCookie("grade", "", -0.1);
             setCookie("OrderID", "", -0.1);
             setCookie("role", "", -0.1);
+            setCookie("SubmitFlag", "false",0.1);
+            setCookie("FinishFlag", "false", 0.1);
             DeleteCookiesArray("Dishes");
         }
 
@@ -190,8 +192,8 @@
                 <li id="manageli"><a href="{{ url_for('home',form='else') }}" onclick="StoreDish()">首页</a></li>
                 <li id="orderhand" style="display:none"><a href="/order_confirm?dishid=0">订单处理</a></li>
                 <li id="dishID"><a href="{{ url_for('order_hand') }}" onclick="StoreDish()">已选菜单</a></li>
-                <li id="personorderID"><a href="/" onclick="StoreDish()">历史订单</a></li>
-                <li id="personinfoID"><a href="/" onclick="StoreDish()">个人信息</a></li>
+                <li id="personorderID"><a href="{{url_for('history_order')}}"onclick="StoreDish()">历史订单</a></li>
+                <li id="personinfoID"><a href="{{url_for('userinfor')}}" onclick="StoreDish()">个人信息</a></li>
                 <li id="gradeID">积分: </li>
             </ul>
             <ul id="userulID">
@@ -201,8 +203,9 @@
                 <li id="username" style="display:none;">
                     <button id="userbuttonID" onclick="ShowSelect()"></button>
                     <ul id="userselectID">
-                        <li><a href="/" onclick="StoreDish()">个人信息</a></li>
-                        <li><a href="/" onclick="StoreDish()">历史订单</a></li>
+                        <li><a href="{{ url_for('order_hand') }}" onclick="StoreDish()">已选菜单</a></li>
+                        <li><a href="{{url_for('userinfor')}}" onclick="StoreDish()">个人信息</a></li>
+                        <li><a href="{{url_for('history_order')}}" onclick="StoreDish()">历史订单</a></li>
                     </ul>
                 </li>
                 <li id="logout" style="display:none" onclick="logout()"><a href="{{ url_for('home',form='else') }}">注销</a></li>

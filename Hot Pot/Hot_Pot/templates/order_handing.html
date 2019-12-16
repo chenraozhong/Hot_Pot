@@ -157,6 +157,7 @@
         CheckoutLogin();
         if(getCookie("SubmitFlag")=='true'){
             alert("订单已提交，请前往历史订单查看状态。若想重新下单，请重新登录");
+            setCookie("FinishFlag","true",0.1);
             window.open("/","_parent");
         }
         ShowOrder();

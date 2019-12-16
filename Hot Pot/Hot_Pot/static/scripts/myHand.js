@@ -197,17 +197,14 @@ function UploadOrder() {
     var myIndex;
     for (var i = 0; i < 3; i++) {
         mySelect = document.getElementById(myDic[i]);
-        //alert("ceshi");
         myIndex = mySelect.selectedIndex;
-        //alert(mySelect.options[myIndex].value);
         setCookie(myCookieName[i], mySelect.options[myIndex].value, 0.1);
     }
     //附加信息
     var myText = document.getElementById("OverheadID");
-    alert(myText.value);
     setCookie("orderoverhead", myText.value, 0.1);
     //原价、实付(在前面的函数已经存入cookie中)
-    //设置flag，使用户在提交完订单之后不能再进入已选菜单，除非重新登录
+    //设置上传标签，表示用户已经填写了订单的基本信息
     setCookie("SubmitFlag", "true", 0.1);
     window.open("/order_hand", "_parent");
 }

@@ -3,7 +3,7 @@ Routes and views for the flask application.
 """
 from datetime import datetime
 from flask import render_template
-from flask import request,flash
+from flask import request,flash,make_response,redirect
 from Hot_Pot import app
 import time
 import pymssql, json
@@ -129,7 +129,8 @@ def SigninSuccess():
 def order_hand():
     #以下为判断是否有订单提交
     mySubmit=request.cookies.get("SubmitFlag")
-    if(mySubmit=='false'):
+    myFinish=request.cookies.get("FinishFlag")
+    if(mySubmit=='true' and myFinish=='false'):
         myDishID=request.cookies.get("orderdishesid")
         myDishName=request.cookies.get("orderdishesname")
         myPrice=request.cookies.get("orderprice");
@@ -142,7 +143,7 @@ def order_hand():
         myUserID=request.cookies.get("ID")
         myOrderID=request.cookies.get("OrderID")
         #将订单信息插入到订单总表(正确)
-        myStr="insert into 订单总表 values('"+myUserID+"','"+myOrderID+"','"+myAddress+"','"+myOriPrice+"','"+myRealPrice+"','"+myDelieve+"','待处理','"+myOverhead+"','"+myGrade+"')"
+        myStr="insert into 订单总表 values('"+myUserID+"','"+myOrderID+"','"+myAddress+"','"+myOriPrice+"','"+myRealPrice+"','"+myDelieve+"','待处理','"+myOverhead+"','"+myGrade+"','否')"
         cursor.execute(myStr)
         myDishID=myDishID.split('_')
         myPrice=myPrice.split('_')
@@ -184,14 +185,8 @@ def order_hand():
 @app.route('/order_confirm/', methods=['GET', 'POST'])
 @app.route('/order_confirm/<dishid>', methods=['GET', 'POST'])
 def order_confirm(dishid=''):
-   
-    #用于判断是否要显示订单的详细信息
     myShow="false"
     myTest=request.args['dishid']
-    if(myTest[0]!='0' and myTest[0]!='1'):
-        cursor.execute("select * from 订单子表 where 订单号='"+myTest+"'")
-        mySuborder=cursor.fetchall()
-        myShow="true"
     if(myTest[0]=='1'):
         cursor.execute("update view_orderform set 状态='已处理' where 订单号='"+myTest[1:len(myTest)]+"'")
         db.commit()
@@ -200,6 +195,13 @@ def order_confirm(dishid=''):
     row=cursor.fetchall()
     length=len(row)
     mySuborder=""
+    #用于判断是否要显示订单的详细信息
+   
+    if(myTest[0]!='0' and myTest[0]!='1'):
+        cursor.execute("select * from 订单子表 where 订单号='"+myTest+"'")
+        mySuborder=cursor.fetchall()
+        myShow="true"
+
     return render_template(
         'order_confirm.html',
         title='订单处理',
@@ -210,3 +212,94 @@ def order_confirm(dishid=''):
         year=datetime.now().year,
     )
 
+
+
+#########################################
+## 用户操作
+#########################################
+@app.route('/user_indormation', methods=['GET', 'POST'])
+def userinfor():
+    id = request.cookies.get("ID")
+    flag=0
+    # 获取用户的基本信息
+    cursor.execute("select * from 用户 where 用户ID='" + id + "'")
+    userdata = cursor.fetchone()
+    #获取地址信息
+    AddressMessage = "select * from 地址 where 用户ID='" + id + "';"
+    cursor.execute(AddressMessage)
+    Addressdata = cursor.fetchall()
+    Addrlength = len(Addressdata)
+    Addrlength = [i for i in range(Addrlength)]
+    # 向数据库插入地址信息
+    inProMes = request.cookies.get("ProMes")
+    inShiMes = request.cookies.get("ShiMes")
+    inQuMes = request.cookies.get("QuMes")
+    inDetMes = request.cookies.get("DetMes")
+    DetailMessage = str(inProMes) + str(inShiMes) + str(inQuMes) + str(inDetMes)
+    if inProMes:     
+        for i in Addressdata:
+            print(i[1])
+            if i[1] == str(DetailMessage):
+                flag = 1
+                break
+        if flag==1:
+            print("已被插入，无需重复插入！")
+            flag=0
+        else:
+            InsertMessage = "insert into 地址 values('" + id + "','" + DetailMessage + "');"
+            cursor.execute(InsertMessage)
+    db.commit()
+    return render_template('userinfor.html',
+        data=userdata,
+        Addressdata=Addressdata,
+        addelen=Addrlength)
+
+
+#########################################
+## 历史订单
+#########################################
+@app.route('/history_order', methods=['GET', 'POST'])
+def history_order():
+    id = request.cookies.get("ID")
+    print(id)
+    # 获取订单信息和配送信息
+    myDingPeiMess="select * from view_orderform where 用户ID='"+id+"';"
+    cursor.execute(myDingPeiMess)
+    myDingPei=cursor.fetchall()
+    # 获取订单菜品信息
+    myZhaoOrderID=request.cookies.get("ZhaoOrderID");
+    myShow=request.cookies.get("ZhaoShow")
+    myDish=''
+    if(myZhaoOrderID!=None):
+        #将订单的评分状态改为已评分状态
+        cursor.execute("update 订单总表 set 是否评分='是' where 订单号='"+myZhaoOrderID+"'")
+        myDishMess="select * from 订单子表 where 订单号='"+myZhaoOrderID+"';"
+        cursor.execute(myDishMess)
+        myDish=cursor.fetchall()
+        length=len(myDish)
+        myDishLength=[i for i in range(length)]
+        # 评分信息的获取
+        for i in myDishLength:
+            myScore1=request.cookies.get("myScore"+str(i))
+            if(myScore1!=None):
+                myStr = "update 订单子表 set 评分=" + myScore1 + " where 订单号='" + myDish[i][0] + "' and  菜品ID='"+ myDish[i][2]+"';"
+                cursor.execute(myStr)
+                print("chen")
+                print(myStr)
+                myNum="select 评分人数 from 菜单动态表 where 菜品ID='"+myDish[i][2]+"';"
+                myGrade="select 总评分 from 菜单动态表 where 菜品ID='"+myDish[i][2]+"';"
+                cursor.execute(myNum)
+                myNum=cursor.fetchall()
+                cursor.execute(myGrade)
+                myGrade=cursor.fetchall()
+                myStr="update 菜单动态表 set 总评分="+str(((float(myGrade[0][0])*float(myNum[0][0]))+float(myScore1))/(int(myNum[0][0])+1))+" where 菜品ID='"+ myDish[i][2]+"';"
+                cursor.execute(myStr)
+                myStr1="update 菜单动态表 set 评分人数="+str((int(myNum[0][0])+1))+" where 菜品ID='"+ myDish[i][2]+"';"
+                cursor.execute(myStr1)
+                db.commit()
+    return render_template(
+        'history_order.html',
+        myDingPei=myDingPei,
+        myDish=myDish,
+        myShow=myShow
+        )

@@ -11,5 +11,5 @@ if __name__ == '__main__':
         PORT = int(environ.get('SERVER_PORT', '5555'))
     except ValueError:
         PORT = 5555
-    #app.run(host='0.0.0.0', port=5000,debug=True)
-    app.run(HOST, PORT,debug=True)
+    app.run(host='0.0.0.0', port=5000,debug=True)
+    #app.run(HOST, PORT,debug=True)

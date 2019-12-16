@@ -1,0 +1,223 @@
+﻿{% extends "layout.html" %}
+{% block head %}
+{{super()}}
+<!--加样式和动作-->
+<style>
+    .myMessDis {
+        background-color: white;
+        position: relative;
+        left: 20%;
+        width: 60%;
+        min-height: 100%;
+    }
+
+    .myDataDis {
+        position:relative;
+        padding-top:10%;
+        margin-left:5%;
+    }
+
+    h3 {
+        position: relative;
+        left: 27%;
+        width: 60%;
+    }
+
+    button {
+        position: relative;
+        left: 45%;
+        font-size: large;
+    }
+
+    .myDisInfo {
+        display: none;
+        position: fixed;
+        opacity: 1;
+        z-index: 10;
+        left: 35%;
+        top: 25%;
+        width: 27%;
+        height: 53%;
+        background-color: white;
+        border-style: outset;
+        border-color: gray;
+        border-radius: 10px;
+    }
+
+    .myAddProInfo {
+        position: relative;
+        top: 10%;
+        left: 25%;
+    }
+
+    .myAddShiInfo {
+        position: relative;
+        left: 25%;
+        top: 15%;
+    }
+
+    .myAddQuInfo {
+        position: relative;
+        left: 20%;
+        top: 20%;
+    }
+
+    select {
+        width: 40%;
+        height: 10%;
+        border-radius: 10px;
+        font-size: 130%;
+    }
+
+        select:focus {
+            border-style: none;
+        }
+
+    .myDisInfo label {
+        font-size: 130%;
+        margin-top: 10%;
+    }
+
+    #myInputID {
+        width: 60%;
+        margin-left: 20%;
+        margin-top: 8%;
+        height: 10%;
+        border-radius: 10px;
+    }
+
+    .mySubmitInfo {
+        width: 30%;
+        border-radius: 10px;
+        margin-top: 8%;
+        margin-left: 35%;
+        height: 10%;
+        display: none;
+    }
+
+    .myButtonInfo {
+    }
+
+    .myShade {
+        display: none;
+        opacity: 0.7;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9;
+        background-color: black;
+    }
+</style>
+<script>
+    function ShowTemFrame() {
+        //点击加号后的临时添加框
+        document.getElementById('myDisID').setAttribute('style', 'display:block');
+        document.getElementById("myShadeID").setAttribute("style", "display:block");
+    }
+    function ShowMessageNoFree() {
+        //填写信息不空
+        var proname = document.getElementById("myAddProID");
+        var index = proname.selectedIndex;
+        var name = proname.options[index].value;
+        var shiname = document.getElementById("myAddShiID");
+        var index = shiname.selectedIndex;
+        var shi = shiname.options[index].value;
+        var quname = document.getElementById("myAddQuID");
+        var index = quname.selectedIndex;
+        var qu = quname.options[index].value;
+        var message = document.getElementById("myInputID").value;
+        if (name == "" || name == null) {
+            alert("省不能为空！");
+            return false;
+        }
+        else if (shi == "" || shi == null) {
+            alert("市不能为空！");
+            return false;
+        }
+        else if (qu == "" || qu == null) {
+            alert("区或县不能为空！");
+            return false;
+        }
+        else if (message == "" || message == null) {
+            alert("请填写你的详细信息！");
+            return false;
+        }
+        else {
+            $("#mySubID").click();
+        }
+        setCookie("ProMes", name, 0.1);
+        setCookie("ShiMes", shi, 0.1);
+        setCookie("QuMes", qu, 0.1);
+        setCookie("DetMes", message, 0.1);
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<!--页面信息-->
+<div class="myMessDis">
+    <div class="myDataDis">
+        <div>
+            <h3>用户名字：{{ data[1] }}</h3>
+        </div>&nbsp;
+        <div>
+            <h3>联系方式：{{ data[4] }}</h3>
+        </div>&nbsp;
+        <div>
+            <h3>我的积分：{{ data[5] }}</h3>
+        </div>&nbsp;
+        {% for i in addelen %}
+        <div>
+            <h3>我的地址{{ i+1 }}：{{ Addressdata[i][1]}}</h3>
+        </div>&nbsp;
+        {% endfor %}
+        <!--地址信息添加-->
+        <div class="myAddShadeInfo" id="myAddressID">
+            <button onclick="ShowTemFrame()">添加新地址</button>
+        </div>
+    </div>
+    <!--添加地址隐藏窗口-->
+    <div id="myDisID" class="myDisInfo">
+        <form name="myForm">
+            <div class="myAddProInfo">
+                <label>&ensp;省&ensp;&ensp;:  </label>
+                <select name="myAddProName" id="myAddProID">
+                    <option value=""></option>
+                    <option value="河南省">河南省</option>
+                    <option value="安徽省">安徽省</option>
+                    <option value="江西省">江西省</option>
+                    <option value="湖南省">湖南省</option>
+                </select>
+            </div>
+            <div class="myAddShiInfo">
+                <label>&ensp;市&ensp;&ensp;:  </label>
+                <select name="myAddShiName" id="myAddShiID">
+                    <option value=""></option>
+                    <option value="商丘市">商丘市</option>
+                    <option value="合肥市">合肥市</option>
+                </select>
+            </div>
+            <div class="myAddQuInfo">
+                <label>区或县 : </label>&ensp;
+                <select name="myAddQuName" id="myAddQuID">
+                    <option value=""></option>
+                    <option value="蜀山区">蜀山区</option>
+                    <option value="柘城县">柘城县</option>
+                </select>
+            </div>
+            <input type="text" id="myInputID" name="myInputName" placeholder="详细地址：如道路，门牌号，小区，楼栋号，单元室等" />
+            <br />
+            <input type="submit" id="mySubID" class="mySubmitInfo" />
+        </form>
+        <button class="myButtonInfo" onclick="ShowMessageNoFree()">提交</button>
+    </div>
+</div>
+
+<!-- 遮罩层 -->
+<div class="myShade" id="myShadeID">
+
+</div>
+
+{% endblock %}

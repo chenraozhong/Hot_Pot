@@ -120,7 +120,6 @@
 
         var myDetailUL=document.getElementById("myDishInfoID");
         var myAttri=new Array("DetailName","DetailAmount","DetailPrice");
-
         for(var i=0;i<mySuborder.length;i++){
             var myLi=document.createElement("li");
             var myDiv;
@@ -129,7 +128,7 @@
                 myDiv.setAttribute("class",myAttri[j]);
                 myDiv.innerHTML=mySuborder[i][3+j];
                 if(j==2){
-                    myDiv.innerHTML="￥"+parseInt(mySuborder[i][4])*parseInt(mySuborder[i][5]);
+                    myDiv.innerHTML="￥"+parseInt(mySuborder[i][5]);
                 }
                 myLi.appendChild(myDiv);
             }
@@ -153,10 +152,10 @@
         var myUL = document.getElementById("myCostulID");
         myUL.innerHTML = "";
         var myLi = document.createElement("li");
-        myLi.innerHTML = "原价:" + mySearchResult[i][6];
+        myLi.innerHTML = "原价:" + mySearchResult[i][7];
         myUL.appendChild(myLi);
         myLi = document.createElement("li");
-        myLi.innerHTML = "实付:<span style=\"font-size:150%\">" + mySearchResult[i][7] + "</span>";
+        myLi.innerHTML = "实付:<span style=\"font-size:150%\">" + mySearchResult[i][6] + "</span>";
         myUL.appendChild(myLi);
 
         //设置确认按钮动作
