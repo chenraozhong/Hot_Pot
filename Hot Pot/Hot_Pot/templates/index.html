@@ -57,40 +57,43 @@
             font-size: 60%;
             height: 50%;
         }
-        .myorder button {
-        border-style: none;
-        background-color: white;
-        width:6%;
-        height:100%;
-        text-align:left;
-        /*background-color:green;*/
-    }
 
-        .myorder button:hover {
-            background-color: RGB(245,245,245);
+        .myorder button {
+            border-style: none;
+            background-color: white;
+            width: 6%;
+            height: 100%;
+            text-align: left;
+            /*background-color:green;*/
         }
 
+            .myorder button:hover {
+                background-color: RGB(245,245,245);
+            }
+
     .myText {
-        float:left;
+        float: left;
         display: inline-block;
-        width:67%;
+        width: 67%;
         /*background-color:red;*/
-        height:100%;    
+        height: 100%;
     }
-    .myIcon{
-        margin-left:6%;
+
+    .myIcon {
+        margin-left: 6%;
         display: inline-block;
-        width:27%;
-        height:100%;
+        width: 27%;
+        height: 100%;
     }
+
     .myUp {
-        color:RGB(245,245,245);
-        margin-left:2.5%;
+        color: RGB(245,245,245);
+        margin-left: 2.5%;
         height: 50%;
     }
 
     .myDown {
-        color:RGB(245,245,245);
+        color: RGB(245,245,245);
         height: 50%;
     }
 
@@ -196,6 +199,11 @@
         z-index: 9;
         background-color: black;
     }
+
+    .RMB {
+        font-size: 90%;
+        color: rgb(255, 172, 0);
+    }
 </style>
 
 <script>
@@ -248,22 +256,6 @@
             StoreDish();
         }
         window.open("/", "_parent");
-    }
-
-    function StoreDish() {
-        //将用户已选的菜品存入cookies中，以保证页面刷新之后，用户的选择还在
-        //在跳入到已选菜单之后，开发人员也能从cookies中读取相关数据，而无需再从数据库中读取
-        for (var i = 0; i < myLen; i++) {
-            var myDishID = mySearchResult[i][0];
-            var myAmount = document.getElementById("myFrameID" + i).getAttribute("value");
-            //判断myDishID是否加入已选菜单中
-            var myTem = getCookie(myDishID);
-           
-            if (myTem == '') {
-                setCookiesArray("Dishes", myDishID);
-            }
-            setCookie(myDishID, myAmount, 0.1);
-        }
     }
 
     function Log_In(){
@@ -371,7 +363,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="myContent">
+<div class="myContent" style="min-height:500px">
     <!-- 食材分类 -->
     <div class="mysort">
         <span class="glyphicon glyphicon-list"></span>
@@ -401,7 +393,8 @@
                     </div>
                 </button>
             </li>
-            <li><button onclick="SortSale()">
+            <li>
+                <button onclick="SortSale()">
                     <div class="myText" id="ordersaleID">
                         <p>销量<p>
                     </div>
@@ -413,8 +406,10 @@
                             <span class="glyphicon glyphicon-chevron-down myDown"></span>
                         </div>
                     </div>
-                </button></li>
-            <li><button onclick="SortPrice()">
+                </button>
+            </li>
+            <li>
+                <button onclick="SortPrice()">
                     <div class="myText" id="orderpriceID">
                         <p>价格<p>
                     </div>
@@ -426,7 +421,8 @@
                             <span class="glyphicon glyphicon-chevron-down myDown"></span>
                         </div>
                     </div>
-                </button></li>
+                </button>
+            </li>
         </ul>
     </div>
     <div style="clear:both"></div>
@@ -479,7 +475,7 @@
         <div class="myClose">
             <button onclick="CloseFrame(2)"><span class="glyphicon glyphicon-remove"></span></button>
         </div>
-        <form onsubmit="checkpassword()">
+        <form onsubmit="checkpassword()" action="index.html" target="_parent">
             <label for="usernameID"></label>
             <input type="text" id="usernameID" class="input_style" name="username" placeholder="用户名" />
             <label for="passwordID"></label>
@@ -490,10 +486,9 @@
             </select>
             <input type="submit" value="登录" />
             <a class="do_left" href="{{url_for('signin')}}" target="_blank" style="text-decoration: none">注册</a>
-            <a class="do_right" href="忘记密码界面" style="text-decoration: none">忘记密码</a>
+            <!--<a class="do_right" href="忘记密码界面" style="text-decoration: none">忘记密码</a>-->
         </form>
     </div>
-
 </div>
 
 {% endblock %}

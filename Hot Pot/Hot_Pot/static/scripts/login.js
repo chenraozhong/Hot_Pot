@@ -32,6 +32,7 @@ function checkpassword() {
             setCookie("ID", myID, 0.1);
             setCookie("role", myRole, 0.1);
             setCookie("grade", myGrade, 0.1);
+            setCookie("SubmitFlag", "false", 0.1);
             //以下为生成订单号模块
             var date = new Date();
             var myOrderID = "";
@@ -42,13 +43,6 @@ function checkpassword() {
             myOrderID += GetNum(date.getMinutes());
             myOrderID += myID;
             setCookie("OrderID", myOrderID, 0.1);
-
-            if (myRole == "用户") {
-                window.open("/", "_parent");
-            }
-            else {
-                window.open("/", "_parent");
-            }
         }
     }
 }

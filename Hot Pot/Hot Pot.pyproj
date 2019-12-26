@@ -41,6 +41,7 @@
     <Folder Include="Hot_Pot\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Hot_Pot\static\content\myDetail.css" />
     <Content Include="Hot_Pot\static\content\myGrally.css" />
     <Content Include="Hot_Pot\static\content\myLogin.css" />
     <Content Include="Hot_Pot\static\content\mySearch.css" />
@@ -48,15 +49,12 @@
     <Content Include="Hot_Pot\static\scripts\login.js" />
     <Content Include="Hot_Pot\static\scripts\myCookies.js" />
     <Content Include="Hot_Pot\static\scripts\myDish.js" />
-    <Content Include="Hot_Pot\templates\content_write.html" />
-    <Content Include="Hot_Pot\templates\into_sys%28pre%29.html" />
-    <Content Include="Hot_Pot\templates\into_sys%28赵%29.html" />
-    <Content Include="Hot_Pot\templates\into_sys.html" />
-    <Content Include="Hot_Pot\templates\login.html" />
-    <Content Include="Hot_Pot\templates\myhomepage.html" />
+    <Content Include="Hot_Pot\static\scripts\myHand.js" />
+    <Content Include="Hot_Pot\templates\history_order.html" />
+    <Content Include="Hot_Pot\templates\order_confirm.html" />
+    <Content Include="Hot_Pot\templates\order_handing.html" />
     <Content Include="Hot_Pot\templates\signin.html" />
-    <Content Include="Hot_Pot\templates\test.html" />
-    <Content Include="Hot_Pot\templates\zhengding_mess.html" />
+    <Content Include="Hot_Pot\templates\userinfor.html" />
     <Content Include="requirements.txt" />
     <Content Include="Hot_Pot\static\content\bootstrap.css" />
     <Content Include="Hot_Pot\static\content\bootstrap.min.css" />
@@ -80,8 +78,6 @@
     <Content Include="Hot_Pot\static\scripts\respond.js" />
     <Content Include="Hot_Pot\static\scripts\respond.min.js" />
     <Content Include="Hot_Pot\static\scripts\_references.js" />
-    <Content Include="Hot_Pot\templates\about.html" />
-    <Content Include="Hot_Pot\templates\contact.html" />
     <Content Include="Hot_Pot\templates\index.html" />
     <Content Include="Hot_Pot\templates\layout.html" />
   </ItemGroup>

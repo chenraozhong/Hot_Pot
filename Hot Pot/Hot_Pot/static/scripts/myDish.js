@@ -74,7 +74,7 @@ function ShowCustomer() {
         //菜品价格显示
         var myPriceDiv = document.createElement("div");
         myPriceDiv.setAttribute("class", "myGrallyPrice");
-        myPriceDiv.innerHTML = "<p>价格 " + mySearchResult[i][2] + "</p>";
+        myPriceDiv.innerHTML = "<p><span class='RMB'>￥</span>" + mySearchResult[i][2] + "</p>";
         //数量选择框
         var myAmountDiv = document.createElement("div");
         var mySubButton = document.createElement("button");
@@ -253,10 +253,11 @@ function UpType(myValue) {
 function setCookiesArray(myName, myValue) {
     //将myValue添加到数组myName中（因为无法向cookies中添加array，只能先将array转成str,再存入cookies中）
     var cookie = getCookie(myName);
-    var myArray = cookie.split("|");
+    var myArray = cookie.split("_");
     myArray.push(myValue);
-    cookie = myArray.join("|");
-    if (cookie.endsWith("\\|")) {
+    cookie = myArray.join("_");
+    
+    if (cookie.endsWith("_")) {
         cookie = cookie.substring(0, cookie.length - 1);
     }
     setCookie(myName, cookie, 0.1);

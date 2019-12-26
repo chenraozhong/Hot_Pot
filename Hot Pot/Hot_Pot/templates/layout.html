@@ -15,7 +15,9 @@
         body {
             background-color: RGB(245,245,245);
         }
-
+        hr{
+           border-color:gray;
+        }
         .active {
             float: left;
             width: 20%;
@@ -25,44 +27,66 @@
 
         .mynavbar {
             width: 100%;
-            height: 9%;
+            height: 10%;
             margin-top: -3%;
             background-color: RGB(245,245,245);
+            /*background-color:red;*/
         }
 
-            .mynavbar ul {
-                list-style-type: none;
-                overflow: hidden;
-                padding-left: 20%;
-                height: 100%;
-            }
-            .mynavbar button{
-                border:none;
-                font-size:120%;
-            }
-            .mynavbar button:hover{
-                color: white;
-                background-color: #f16522;
-            }
-
-            .mynavbar li {
+        #navbarulID,#userulID {
+            display:inline-block;
+            list-style-type: none;
+            overflow: hidden;
+            height: 95%;
+        }
+        #navbarulID li,#userulID li {
+            display: inline-block;
+            font-size: 120%;
+            height:50%;
+            margin-top:2%;
+            /*background-color:red;*/
+            /*background-color:blue;*/
+        }
+            #navbarulID li a ,#userulID li a{
                 display: inline-block;
-                margin-left: 4%;
-                padding-bottom: 2%;
-                font-size: 120%;
+                text-decoration: none;
+                color:black;
+                height:100%;
             }
-
-                .mynavbar li a {
-                    display: inline-block;
-                    text-decoration: none;
-                    color: black;
-                }
-
-                    .mynavbar li a:hover {
-                        color: white;
-                        background-color: #f16522;
-                    }
-
+        #navbarulID{
+            /*background-color:blue;*/
+            width:60%;
+        }
+        #navbarulID li{
+            margin-left:10%;
+            /*margin-top:3%;*/
+        }
+        #userulID{
+            width:15%;
+            /*background-color:green;*/
+        }
+        #userulID li{
+            /*margin-top:6%;*/
+            margin-right:1%;
+        }
+        #userlogin{
+            margin-left:20%;
+        }
+        #userulID button{
+            border: none;
+            background-color:RGB(245,245,245);
+            /*background-color:green;*/
+            font-size:100%;
+            height:100%;
+        }
+        #userulID button:hover{
+             color: white;
+             background-color: #f16522;
+        }
+        #navbarulID li a:hover,#userulID li a:hover{
+            color:white; 
+            background-color: #f16522;
+        }
         .iflogin {
             display: inline;
         }
@@ -71,39 +95,87 @@
             background-color: #f16522;
         }
 
+        #userselectID {
+            position: absolute;
+            display: none;
+            background-color: white;
+            width: 8%;
+        }
+            #userselectID ul {
+                height: 100%;
+                width: 100%;
+                margin-left: 50%;
+            }
+
+            #userselectID li {
+                display: block;
+                /*background-color:green;*/
+                margin-left: -40%;
+                margin-top: 6%;
+                font-size: 80%;
+                width: 100%;
+            }
+
+            #userselectID a {
+                width: 100%;
+            }
+        #orderhand{
+            margin-left:1%;
+        }
     </style>
     <script>
-        function CheckLogin() {
+        $(document).ready(function () {
             var user = getCookie("username");
             var grade = getCookie("grade");
             if (user != "") {
-                document.getElementById("user").style = ("display:none");
+                document.getElementById("userlogin").style = ("display:none");
                 document.getElementById("slash").style = ("display:none");
                 document.getElementById("sigin").style = ("display:none");
-                document.getElementById("username").style = ("display:inline-block;margin-left:6%");
-                document.getElementById("logout").style = ("display:inline-block;margin-left:20px");
-                document.getElementById("usernametext").innerHTML = user;
+                document.getElementById("username").style = ("display:inline-block;");
+                document.getElementById("logout").style = ("display:inline-block;");
+                document.getElementById("userbuttonID").innerHTML = user;
                 document.getElementById("gradeID").innerHTML = "积分: " + grade;
                 var Role = getCookie("role");
                 if (Role == '管理员') {
-                    $("#managementID").css("display", "inline-block");
                     $("#gradeID").css("display", "none");
                     $("#dishID").css("display", "none");
                     $("#personinfoID").css("display", "none");
-                    $("#username").css("margin-left", "25%");
-                }
-                else {
-                    $("#managementID").css("display", "none");
-                    $("#username").css("margin-left", "6%");
+                    $("#personorderID").css("display", "none");
+                    $("#orderhand").css("display", "inline-block");
+                    document.getElementById("username").innerHTML = user;
+                    document.getElementById("manageli").setAttribute("style", "margin-left:60%;");
                 }
             }
+        })
+
+        function DeleteCookiesArray(myName) {
+            //将某cookies组的信息全部删除
+            var cookie = getCookie(myName);
+            var myArray = cookie.split("_");
+            for (var i = 0; i < myArray.length; i++) {
+                setCookie(myArray[i], "", -1);
+            }
+            setCookie("Dishes", '', -1);
         }
+
         function logout() {
             setCookie("username", "", -0.1);
             setCookie("ID", "", -0.1);
             setCookie("grade", "", -0.1);
             setCookie("OrderID", "", -0.1);
             setCookie("role", "", -0.1);
+            setCookie("SubmitFlag", "false",0.1);
+            setCookie("FinishFlag", "false", 0.1);
+            DeleteCookiesArray("Dishes");
+        }
+
+        function ShowSelect() {
+            document.getElementById("userselectID").style = "display:block;";
+            document.getElementById("userbuttonID").setAttribute("onclick", "HiddenSelect()");
+        }
+        function HiddenSelect() {
+            document.getElementById("userselectID").style = "display:none;";
+            document.getElementById("userbuttonID").setAttribute("onclick", "ShowSelect()");
         }
 
     </script>
@@ -111,34 +183,44 @@
 
 </head>
 
-<body onload="CheckLogin()">
+<body>
     {%block navbar%}
     <div class="mynavbar">
         <div class="active"><a href="/"><img src="../static/logo1.png" style="height:100%;width:100%" /></a></div>
-        <div style="height:100%;">
-            <ul>
-                <li style="margin-left:27%"><a href="{{ url_for('home',form='else') }}">首页</a></li>
-                <li id="dishID"><a href="{{ url_for('home',form='else') }}">已选菜单</a></li>
-                <li id="personinfoID"><a href="/">个人信息</a></li>
-                <li id="managementID" style="display:none"><a href="{{ url_for('managementuser') }}">菜品管理</a></li>
+        <div>
+            <ul id="navbarulID">
+                <li id="manageli"><a href="{{ url_for('home',form='else') }}" onclick="StoreDish()">首页</a></li>
+                <li id="orderhand" style="display:none"><a href="/order_confirm?dishid=0">订单处理</a></li>
+                <li id="dishID"><a href="{{ url_for('order_hand') }}" onclick="StoreDish()">已选菜单</a></li>
+                <li id="personorderID"><a href="{{url_for('history_order')}}"onclick="StoreDish()">历史订单</a></li>
+                <li id="personinfoID"><a href="{{url_for('userinfor')}}" onclick="StoreDish()">个人信息</a></li>
                 <li id="gradeID">积分: </li>
-                <button id="user" style="margin-left:6%;margin-right:0" onclick="Log_In()">登录</button>
-                <li id="slash" style="margin-left:0;margin-right:0;font-size:180%">/</li>
-                <li id="sigin" style="margin-left:0"><a href="{{url_for('signin')}}">注册</a></li>
-                <li id="username" style="display:none;margin-left:0"><a id="usernametext" href="{{url_for('home',form='else')}}"></a></li>
+            </ul>
+            <ul id="userulID">
+                    <li id="userlogin"><button onclick="Log_In()">登录</button></li>
+                    <li id="slash" style="margin-left:0;margin-right:0;font-size:180%">/</li>
+                    <li id="sigin"><a href="{{url_for('signin')}}">注册</a></li>
+                <li id="username" style="display:none;">
+                    <button id="userbuttonID" onclick="ShowSelect()"></button>
+                    <ul id="userselectID">
+                        <li><a href="{{ url_for('order_hand') }}" onclick="StoreDish()">已选菜单</a></li>
+                        <li><a href="{{url_for('userinfor')}}" onclick="StoreDish()">个人信息</a></li>
+                        <li><a href="{{url_for('history_order')}}" onclick="StoreDish()">历史订单</a></li>
+                    </ul>
+                </li>
                 <li id="logout" style="display:none" onclick="logout()"><a href="{{ url_for('home',form='else') }}">注销</a></li>
             </ul>
         </div>
-        <hr style="margin-top:0%;" />
+        <hr style="margin-top:-1%;">
         <div style="clear:both"></div>
     </div>
-  
+
     {%endblock%}
     <div>
         {% block pre_content%}{% endblock %}
         {% block content %}{% endblock %}
         {%block footer%}
-        <hr />
+        <hr>
         <footer>
             <p>&copy; {{ year }} -三味珍火火锅店</p>
         </footer>
